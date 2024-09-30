@@ -1,0 +1,14 @@
+<launch>
+    <!-- <arg name="multi_robot"                 default="robot_1"/>
+    <group ns="$(arg multi_robot)">
+        <node pkg="swram_robot_mapping_tutorial" type="swram_robot_mapping_tutorial_node" name="swram_robot_mapping_tutorial_node" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+        </node>
+    </group> -->
+    <!-- <arg name="multi_robot2"                 default="robot_2"/>
+    <group ns="$(arg multi_robot2)"> -->
+        <node pkg="swram_robot_mapping_tutorial" type="swram_robot_mapping_tutorial_node" name="swram_robot_mapping_tutorial_node" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+        </node>
+    <!-- </group> -->
+</launch>

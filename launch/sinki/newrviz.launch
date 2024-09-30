@@ -1,0 +1,24 @@
+<launch>
+  <arg name="multi_robot"                     default=""/>
+  <arg name="use_rviz"                        default="true"/>
+  <arg name="frame_id_global"             default="map"/>
+  <arg name="frame_id_odom"               default="$(arg multi_robot)/odom"/>
+  <arg name="frame_id_base_footprint"     default="base_footprint"/>
+  <arg name="frame_id_robot_base"         default="base_link"/>
+  <arg name="file_urdf"                   default="$(find turtlebot3_description)/urdf/turtlebot3_waffle.urdf.xacro"/>
+  <arg name="configuration_basename" default="turtlebot3_lds_2d.lua"/>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="tf_prefix" default=""/>
+  
+  
+  <group if="$(arg use_rviz)">
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find swram_robot_mapping_tutorial)/launch/$(arg multi_robot).rviz"/>
+  </group>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher_$(arg multi_robot)">
+    <param name="publish_frequency" type="double" value="100.0" />
+    <param name="tf_prefix" value="$(arg multi_robot)"/>
+  </node>
+ <group ns="$(arg multi_robot)">
+    <node pkg="tf" type="static_transform_publisher" name="map_tf" args="0 0 0 0 0 0 $(arg frame_id_global) $(arg frame_id_odom) 100" />
+  </group>
+</launch>

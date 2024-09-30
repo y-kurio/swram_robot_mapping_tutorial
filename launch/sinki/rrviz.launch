@@ -1,0 +1,32 @@
+<launch>
+  <arg name="rviz"                            default="true"/>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="tf_prefix" default=""/>
+  <arg name="laser_visual" default="false"/>
+  <arg name="imu_visual" default="false"/>
+  <arg name="camera_visual" default="false"/>
+  <arg name="cmd_vel_topic" default="$(arg multi_robot)/cmd_vel" />
+  <arg name="odom_topic" default="$(arg multi_robot)/odom" />
+  <arg name="move_forward_only" default="false"/>
+  <arg name="multi_robot"                     default="robot_1"/>
+  <arg name="use_rviz"                        default="$(arg rviz)"/>
+
+  <group ns="$(arg multi_robot)">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+
+  <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)"/>
+  </include>
+
+  <include file="$(find swram_robot_mapping_tutorial)/launch/navigation.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)"/>
+  </include>
+  
+  </group>
+  
+
+</launch>

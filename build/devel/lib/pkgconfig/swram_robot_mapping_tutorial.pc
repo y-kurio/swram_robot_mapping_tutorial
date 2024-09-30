@@ -1,0 +1,8 @@
+prefix=/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/devel
+
+Name: swram_robot_mapping_tutorial
+Description: Description of swram_robot_mapping_tutorial
+Version: 0.0.0
+Cflags: -I/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/include
+Libs: -L${prefix}/lib -lswram_robot_mapping_tutorial -lpotbot_lib
+Requires: roscpp sensor_msgs message_runtime
