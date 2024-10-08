@@ -18,7 +18,11 @@
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
     </include>
 
-  <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+  <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)"/>
+  </include> -->
+
+  <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/rtabmap_demo.launch">
       <arg name="tf_prefix"       value="$(arg multi_robot)"/>
   </include>
 
@@ -26,6 +30,9 @@
       <arg name="tf_prefix"       value="$(arg multi_robot)"/>
   </include>
   
+  <include file="$(find swram_robot_mapping_tutorial)/launch/test2.launch">
+  </include>
+
   </group>
   
 

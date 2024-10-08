@@ -1,0 +1,14 @@
+<launch>
+  <arg name="use_sim_time" default="false"/>
+  
+  <!-- RTAB-Mapノード -->
+  <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen">
+    <param name="frame_id" value="base_footprint" />
+    <param name="odom_frame_id" value="odom" />
+    <param name="subscribe_depth" value="true" />
+    <param name="subscribe_scan" value="true" />
+  </node>
+
+  <!-- RVizでの可視化 -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rtabmap_ros)/launch/configuration.rviz"/>
+</launch>
