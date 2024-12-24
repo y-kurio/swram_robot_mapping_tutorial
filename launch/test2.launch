@@ -3,8 +3,8 @@
     <group ns="$(arg multi_robot)">
         <node pkg="swram_robot_mapping_tutorial" type="swram_robot_mapping_tutorial_node" name="swram_robot_mapping_tutorial_node" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="2"/>
-            <param name="BUNNSANN"      value="5"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="0.33"/>
         </node>
     </group>
         

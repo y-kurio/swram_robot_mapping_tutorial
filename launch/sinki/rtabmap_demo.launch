@@ -1,10 +1,12 @@
 <launch>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="tf_prefix" default=""/>
   <arg name="use_sim_time" default="false"/>
   
   <!-- RTAB-Mapノード -->
   <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen">
-    <param name="frame_id" value="base_footprint" />
-    <param name="odom_frame_id" value="odom" />
+    <param name="frame_id" value="$(arg tf_prefix)/base_footprint" />
+    <param name="odom_frame_id" value="$(arg tf_prefix)/odom" />
     <param name="subscribe_depth" value="true" />
     <param name="subscribe_scan" value="true" />
   </node>

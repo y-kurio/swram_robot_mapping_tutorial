@@ -22,12 +22,14 @@ double param1,param2;
 tf2_ros::Buffer tf_buffer_;
 geometry_msgs::PointStamped odom_point;
 geometry_msgs::PoseStamped target_point;
+geometry_msgs::PointStamped sub_odom_point;
+geometry_msgs::PoseStamped sub_target_point;
 geometry_msgs::PoseStamped sub_goal;
-actionlib_msgs::GoalStatusArray action_data_;
-nav_msgs::Odometry odomdata_;
+actionlib_msgs::GoalStatusArray action_data_, pre_action_data_;
+nav_msgs::Odometry odomdata_,sub_odomdata_;
 double idoutyou_,move_pose_,move_pose_x_,move_pose_y_,pre_dis,newposdis,x_,y_,x_1_,x_2_,SSS_,goal,currentpos_x,currentpos_y;
 ros::Publisher newgoal_pub;
-
-    // 変数がセット済みかどうかを確認するフラグ
-    bool is_variable_set = false;
+geometry_msgs::PoseStamped sub_pose_out;
+geometry_msgs::TransformStamped sub_transformStamped;
+// static bool is_variable_set = false;
 

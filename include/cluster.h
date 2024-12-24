@@ -1,0 +1,34 @@
+#include <ros/ros.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/PointStamped.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/segmentation/extract_clusters.h>
+#include <limits>
+#include <sensor_msgs/JointState.h>
+#include <geometry_msgs/Point.h>
+#include <math.h>
+#include <tf/transform_listener.h>
+#include <tf2_ros/buffer.h>
+#include <geometry_msgs/PolygonStamped.h>
+#include <visualization_msgs/MarkerArray.h>
+#include <string>
+#include <actionlib_msgs/GoalStatusArray.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <iostream>
+#include <random>
+#include <cmath>
+#include <tf2/LinearMath/Quaternion.h>
+#include <geometry_msgs/Quaternion.h>
+
+std::string FRAME_ROBOT_BASE;
+
+ros::Subscriber cluster_sub_;
+ros::Subscriber odom_sub_;
+ros::Publisher nearest_points_pub_;
+tf2_ros::Buffer tf_buffer_;
+geometry_msgs::PointStamped odom_point;
+nav_msgs::Odometry odomdata_;
+geometry_msgs::PoseStamped pose_out;

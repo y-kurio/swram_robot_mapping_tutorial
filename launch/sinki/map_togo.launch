@@ -1,0 +1,26 @@
+<launch>
+  <arg name="robot_1_map" default="/robot_1/map"/>
+  <arg name="robot_2_map" default="/robot_2/map"/>
+  
+  <!-- Map merge node -->
+  <node pkg="multirobot_map_merge" type="map_merge" name="map_merge" output="screen">
+    <!-- Set transformation frames -->
+    <param name="robot_1_base_frame" value="robot_1/base_link"/>
+    <param name="robot_2_base_frame" value="robot_2/base_link"/>
+    
+    <!-- Optional: Initial guess for robot positions -->
+    <param name="initial_poses" value="[(0.0, 0.0, 0.0), (2.0, 2.0, 0.0)]"/>
+  </node>
+
+  <!-- Remap robot_1 and robot_2 map topics to unique namespaces -->
+  <node pkg="map_server" type="map_server" name="robot1_map_server">
+    <remap from="/map" to="/robot_1/map"/>
+    <remap from="map_metadata" to="/robot_1/map_metadata"/>
+  </node>
+
+  <node pkg="map_server" type="map_server" name="robot2_map_server" args="$(arg robot_2_map)">
+    <remap from="/map" to="/robot_2/map"/>
+    <remap from="map_metadata" to="/robot_2/map_metadata"/>
+  </node>
+  <!-- <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find multirobot_map_merge)/launch/map_merge.rviz"/> -->
+</launch>

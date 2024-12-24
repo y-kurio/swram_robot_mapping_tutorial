@@ -19,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   potbot_lib
   potbot_msgs
+  pcl_ros
+  pcl_conversions
 )
 
 ## System dependencies are found with CMake's conventions
@@ -125,6 +127,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -141,6 +144,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
  add_executable(${PROJECT_NAME}_node src/test2.cpp)
+ add_executable(keisoku src/keisoku.cpp)
+ add_executable(cluster_odom src/cluster_odom.cpp)
 #  add_executable(${PROJECT_NAME}_ms 
 #   src/move_spreading/constructor.cpp
 #   src/move_spreading/debug_main.cpp
@@ -160,6 +165,14 @@ include_directories(
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
+)
+target_link_libraries(keisoku
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+target_link_libraries(cluster_odom
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
 )
 # target_link_libraries(${PROJECT_NAME}_ms
 #   ${catkin_LIBRARIES}
