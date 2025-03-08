@@ -1,22 +1,4 @@
-#include <create_goal.h>
-
-void goalactionCallback(const actionlib_msgs::GoalStatusArray::ConstPtr& msg)
-{
-    action_data_ = *msg;
-}
-
-double ggetRandomAngle() {
-    // 乱数エンジンの初期化
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    // -180 から 180 までの範囲で一様分布の乱数を生成
-    std::uniform_real_distribution<> dis(-180.0, 180.0);
-
-    // 生成された度数法の角度をラジアンに変換して返す
-    double angle_degrees = dis(gen);
-    return angle_degrees * M_PI / 180.0;
-}
+#include <comandliner.h>
 
 void goalpublisher()
 {
@@ -24,14 +6,14 @@ void goalpublisher()
     ROS_INFO("publish OK!!!" );
 }
 
+void goalposeCallback(const geometry_msgs::Pose::ConstPtr& msg)
+{
+    goal_pose_ = *msg;
+}
+
 void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)
 {
     odomdata_ = *msg;
-    // 0からRAND_MAXまでの整数を生成し、0.0〜1.0の範囲にスケール
-    double random_value = static_cast<double>(rand()) / RAND_MAX;
-    // ROS_INFO("Random value: %f", random_value);
-    double heikinnti = param1;
-    double bunnsann = param2;
     odom_point.header = odomdata_.header;
     odom_point.point = odomdata_.pose.pose.position;
 
@@ -51,124 +33,49 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)
         // ROS_INFO("Random value: %f", random_value);
         ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
     }
-    
-    tf2::doTransform(pre_point, pose_out, transformStamped);
-    
-        // ROS_INFO("FRAME_ROBOT_BASE=%s",FRAME_ROBOT_BASE);
-        // std::cout << "x: " << pose_out.pose.position.x << std::endl;
-        // std::cout << "y: " << pose_out.pose.position.y << std::endl;
-    // std::cout << "goalaction: " << action_data_.status_list[0].status << std::endl;
-    if (action_data_.status_list.empty()) 
-    {
-        ROS_INFO("syokai");
-        idoutyou_ = sqrt(-2.0 * param1 * param1 * log(-(random_value - 1.0)));
-        // 乱数エンジンの初期化
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        ROS_INFO("FRAME_ROBOT_BASE=%s",FRAME_ROBOT_BASE);
 
-        // -180 から 180 までの範囲で一様分布の乱数を生成
-        std::uniform_real_distribution<> dis(-180.0, 180.0);
-        // 生成された度数法の角度をラジアンに変換して返す
-        double angle_degrees = dis(gen);
-        double random_angle = angle_degrees * M_PI / 180.0;
-        x_ = idoutyou_*cos(random_angle);
-        y_ = idoutyou_*sin(random_angle);
-        move_pose_x_ = pose_out.pose.position.x + x_;
-        move_pose_y_ = pose_out.pose.position.y + y_;
-        move_pose_ = sqrt(x_*x_ + y_*y_);
-        pre_dis = sqrt((pose_out.pose.position.x - 0.0)*(pose_out.pose.position.x - 0.0) + (pose_out.pose.position.y - 0.0)*(pose_out.pose.position.y - 0.0));
-        newposdis = sqrt((move_pose_x_ - 0.0)*(move_pose_x_ - 0.0) + (move_pose_y_ - 0.0)*(move_pose_y_ - 0.0));
-        x_1_ = (1.0 / sqrt(2.0 * 3.141592 * (heikinnti)*(heikinnti))) * exp(-((pre_dis - bunnsann)*(pre_dis - bunnsann)) / (2.0 * (heikinnti)*(heikinnti)));
-        x_2_ = (1.0 / sqrt(2.0 * 3.141592 * (heikinnti)*(heikinnti))) * exp(-((newposdis - bunnsann)*(newposdis - bunnsann)) / (2.0 * (heikinnti)*(heikinnti)));
-        SSS_ = x_2_ / x_1_;
-        double roll = 0.0;    // X軸周りの回転
-        double pitch = 0.0;   // Y軸周りの回転
-        double yaw = random_angle;    // Z軸周りの回転（90度＝1.57ラジアン）
-        tf2::Quaternion q;
-        // オイラー角からクォータニオンに変換
-        geometry_msgs::Quaternion quaternion;
-        q.setRPY(roll, pitch, yaw);
-        quaternion.x = q.x();
-        quaternion.y = q.y();
-        quaternion.z = q.z();
-        quaternion.w = q.w();
+    // 現在位置とゴール位置を取得
+    double x = pose_out.pose.position.x;
+    double y = pose_out.pose.position.y;
+    double goal_x = goal_pose_.position.x;
+    double goal_y = goal_pose_.position.y;
 
-                
-        //  SSSの条件分岐
-        if( SSS_ > random_value )
-        {
-            // ロボットの位置を更新
-            goal = x_;
-            sub_goal.header.frame_id = FRAME_ROBOT_BASE;
-            sub_goal.header.stamp = ros::Time::now();
-            sub_goal.pose.position.x = move_pose_x_;
-            sub_goal.pose.position.y = move_pose_y_;
-            sub_goal.pose.position.z = 0.0;
-            sub_goal.pose.orientation.x = quaternion.x;
-            sub_goal.pose.orientation.y = quaternion.y;
-            sub_goal.pose.orientation.z = quaternion.z;
-            sub_goal.pose.orientation.w = quaternion.w;
-            std::cout << "x: " << sub_goal.pose.position.x << std::endl;
-            std::cout << "y: " << sub_goal.pose.position.y << std::endl;
-            goalpublisher();
-        }
+    // ゴールまでの距離を計算
+    double distance = sqrt(pow(goal_x - x, 2) + pow(goal_y - y, 2));
+    if (distance < goal_tolerance_) {
+        ROS_INFO("Goal reached!");
+
+        // ロボットを停止
+        cmd_vel_msg.linear.x = 0;
+        cmd_vel_msg.linear.y = 0;
+        cmd_vel_msg.linear.z = 0;  // 目標までの距離に比例した速度
+        cmd_vel_msg.angular.x = 0;
+        cmd_vel_msg.angular.y = 0;
+        cmd_vel_msg.angular.z = 0;  // 角度差に応じた回転速度
+
+        cmd_vel_pub_.publish(cmd_vel_msg);
+        return;
     }
-    else if (!action_data_.status_list.empty() && action_data_.status_list[0].status == 3)
-    {
-        ROS_INFO("seikou");
-        idoutyou_ = sqrt(-2.0 * param1 * param1 * log(-(random_value - 1.0)));
-        // 乱数エンジンの初期化
-        std::random_device rd;
-        std::mt19937 gen(rd());
 
-        // -180 から 180 までの範囲で一様分布の乱数を生成
-        std::uniform_real_distribution<> dis(-180.0, 180.0);
-        // 生成された度数法の角度をラジアンに変換して返す
-        double angle_degrees = dis(gen);
-        double random_angle = angle_degrees * M_PI / 180.0;
-        x_ = idoutyou_*cos(random_angle);
-        y_ = idoutyou_*sin(random_angle);
-        move_pose_x_ = pose_out.pose.position.x + x_;
-        move_pose_y_ = pose_out.pose.position.y + y_;
-        move_pose_ = sqrt(x_*x_ + y_*y_);
-        pre_dis = sqrt((pose_out.pose.position.x - 0.0)*(pose_out.pose.position.x - 0.0) + (pose_out.pose.position.y - 0.0)*(pose_out.pose.position.y - 0.0));
-        newposdis = sqrt((move_pose_x_ - 0.0)*(move_pose_x_ - 0.0) + (move_pose_y_ - 0.0)*(move_pose_y_ - 0.0));
-        x_1_ = (1.0 / sqrt(2.0 * 3.141592 * (heikinnti)*(heikinnti))) * exp(-((pre_dis - bunnsann)*(pre_dis - bunnsann)) / (2.0 * (heikinnti)*(heikinnti)));
-        x_2_ = (1.0 / sqrt(2.0 * 3.141592 * (heikinnti)*(heikinnti))) * exp(-((newposdis - bunnsann)*(newposdis - bunnsann)) / (2.0 * (heikinnti)*(heikinnti)));
-        SSS_ = x_2_ / x_1_;
-        double roll = 0.0;    // X軸周りの回転
-        double pitch = 0.0;   // Y軸周りの回転
-        double yaw = random_angle;    // Z軸周りの回転（90度＝1.57ラジアン）
-        tf2::Quaternion q;
-        // オイラー角からクォータニオンに変換
-        geometry_msgs::Quaternion quaternion;
-        q.setRPY(roll, pitch, yaw);
-        quaternion.x = q.x();
-        quaternion.y = q.y();
-        quaternion.z = q.z();
-        quaternion.w = q.w();
+    // ゴールへの方向を計算
+    double angle_to_goal = atan2(goal_y - y, goal_x - x);
+    double yaw = tf::getYaw(goal_pose_.orientation);
+    double angle_diff = angle_to_goal - yaw;
 
-                
-        //  SSSの条件分岐
-        if( SSS_ > random_value )
-        {
-            // ロボットの位置を更新
-            goal = x_;
-            sub_goal.header.frame_id = FRAME_ROBOT_BASE;
-            sub_goal.header.stamp = ros::Time::now();
-            sub_goal.pose.position.x = move_pose_x_;
-            sub_goal.pose.position.y = move_pose_y_;
-            sub_goal.pose.position.z = 0.0;
-            sub_goal.pose.orientation.x = quaternion.x;
-            sub_goal.pose.orientation.y = quaternion.y;
-            sub_goal.pose.orientation.z = quaternion.z;
-            sub_goal.pose.orientation.w = quaternion.w;
-            std::cout << "x: " << sub_goal.pose.position.x << std::endl;
-            std::cout << "y: " << sub_goal.pose.position.y << std::endl;
-            goalpublisher();
-        }
-    }
+    // 角度差を正規化 (-pi ~ pi)
+    angle_diff = atan2(sin(angle_diff), cos(angle_diff));
+
+    // 速度指令を生成
+    geometry_msgs::Twist cmd_vel_msg;
+    cmd_vel_msg.linear.x = std::min(max_linear_speed_, distance);  // 目標までの距離に比例した速度
+    cmd_vel_msg.linear.y = 0;
+    cmd_vel_msg.linear.z = 0; 
+    cmd_vel_msg.angular.x = 0;
+    cmd_vel_msg.angular.y = 0;
+    cmd_vel_msg.angular.z = std::min(max_angular_speed_, std::max(-max_angular_speed_, angle_diff));  // 角度差に応じた回転速度
+
+    // 速度をパブリッシュ
+    cmd_vel_pub_.publish(cmd_vel_msg);
 }
 
 int main(int argc, char** argv)
@@ -177,21 +84,11 @@ int main(int argc, char** argv)
     ros::NodeHandle nh;
     ros::NodeHandle n("~");
     n.getParam("FRAME/ROBOT_BASE",FRAME_ROBOT_BASE);
-    n.getParam("HEIKINTI",param1);
-    n.getParam("BUNNSANN",param2);
     static tf2_ros::TransformListener tfListener(tf_buffer_);
-    // シードを設定（現在時刻を使う）
-    srand(time(NULL));
-    // 一度だけセットする変数
-    double my_variable = 0.0;
-    // 変数がセット済みかどうかを確認するフラグ
-
-    
     // エンコーダデータをサブスクライブ
-    ros::Subscriber encoder_sub = nh.subscribe("odom", 10, encoderCallback);
-    ros::Subscriber goal_action_sub = nh.subscribe("move_base/status", 10, goalactionCallback);
-    newgoal_pub = nh.advertise<geometry_msgs::PoseStamped>("move_base_simple/goal", 10);
-    
+    ros::Subscriber encoder_sub = nh.subscribe("/main/odom", 10, encoderCallback);
+    ros::Subscriber goal_action_sub = nh.subscribe("sub_goal", 10, goalposeCallback);
+    new_vel_pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 10);
     ros::spin();
     return 0;
 }

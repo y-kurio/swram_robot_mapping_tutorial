@@ -2,13 +2,13 @@
   <arg name="rviz"                            default="true"/>
   <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
   <arg name="tf_prefix" default="main"/>
+  <arg name="multi_robot"                     default="main"/>
   <arg name="laser_visual" default="false"/>
   <arg name="imu_visual" default="false"/>
   <arg name="camera_visual" default="false"/>
   <arg name="cmd_vel_topic" default="$(arg multi_robot)/cmd_vel" />
   <arg name="odom_topic" default="$(arg multi_robot)/odom" />
   <arg name="move_forward_only" default="false"/>
-  <arg name="multi_robot"                     default="main"/>
   <arg name="use_rviz"                        default="$(arg rviz)"/>
 
   <group ns="$(arg multi_robot)">
@@ -33,7 +33,7 @@
       <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
       <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
       <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
-      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_waffle_pi.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
       <param name="global_costmap/global_frame" value="map" />
       <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
       <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />

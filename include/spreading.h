@@ -12,7 +12,6 @@
 #include <geometry_msgs/Point.h>
 #include <random>     // 乱数生成器
 #include <cmath>
-
 //クラスの定義
 class SpreadingClass{
     private:

@@ -9,6 +9,7 @@
 #include <pcl/search/kdtree.h>
 #include <laser_geometry/laser_geometry.h>
 #include <vector>
+#include <map>
 
 class LRFClustering {
 private:
@@ -51,6 +52,9 @@ public:
         pcl::PointCloud<pcl::PointXYZI>::Ptr clustered_cloud(new pcl::PointCloud<pcl::PointXYZI>);
 
         for (int cluster_id = 0; cluster_id < cluster_indices.size(); ++cluster_id) {
+            double sum_x = 0.0, sum_y = 0.0, sum_z = 0.0;
+            size_t num_points = cluster_indices[cluster_id].indices.size();
+
             for (const auto& idx : cluster_indices[cluster_id].indices) {
                 pcl::PointXYZI point;
                 point.x = pcl_cloud->points[idx].x;
@@ -58,7 +62,25 @@ public:
                 point.z = pcl_cloud->points[idx].z;
                 point.intensity = static_cast<float>(cluster_id);  // クラスタIDをintensityに格納
                 clustered_cloud->points.push_back(point);
+
+                // 重心計算用に座標を加算
+                sum_x += point.x;
+                sum_y += point.y;
+                sum_z += point.z;
             }
+
+            // 重心を計算
+            pcl::PointXYZI centroid_point;
+            centroid_point.x = sum_x / num_points;
+            centroid_point.y = sum_y / num_points;
+            centroid_point.z = sum_z / num_points;
+            centroid_point.intensity = static_cast<float>(cluster_id) + 100; // 重心は異なるintensityでマーク
+
+            clustered_cloud->points.push_back(centroid_point);
+
+            // ログ出力
+            ROS_INFO("Cluster ID: %d, Centroid - x: %.2f, y: %.2f, z: %.2f",
+                     cluster_id, centroid_point.x, centroid_point.y, centroid_point.z);
         }
 
         // PointCloud2メッセージとして送信

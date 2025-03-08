@@ -11,17 +11,12 @@
   <arg name="imu_visual" default="false"/>
   <arg name="camera_visual" default="false"/>
   
-  <group if="$(eval tf_prefix=='')">
+  <group ns="$(arg tf_prefix)">
+    <!-- ロボットごとの robot_description を設定 -->
     <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro laser_visual:=$(arg laser_visual) imu_visual:=$(arg imu_visual) camera_visual:=$(arg camera_visual)" />
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_$(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -param robot_description" />
-   
+
+    <!-- Gazebo にモデルをスポーン -->
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf"
+          args="-urdf -model $(arg tf_prefix) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -param robot_description" />
   </group>
-  
-  <group unless="$(eval tf_prefix=='')" ns="$(arg tf_prefix)">
-    <param name="tf_prefix" value="$(arg tf_prefix)" />
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro laser_visual:=$(arg laser_visual) imu_visual:=$(arg imu_visual) camera_visual:=$(arg camera_visual)" />
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model $(arg tf_prefix) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -param robot_description" />
-        
-  </group>
-  
 </launch>
