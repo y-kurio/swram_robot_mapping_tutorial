@@ -129,7 +129,43 @@ file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES "/home/ubuntu/catkin_ws/sr
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/swram_robot_mapping_tutorial/msg" TYPE FILE FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/msg/cluster_data.msg")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/swram_robot_mapping_tutorial/cmake" TYPE FILE FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/catkin_generated/installspace/swram_robot_mapping_tutorial-msg-paths.cmake")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/devel/include/swram_robot_mapping_tutorial")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/devel/share/roseus/ros/swram_robot_mapping_tutorial")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/devel/share/common-lisp/ros/swram_robot_mapping_tutorial")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/devel/share/gennodejs/ros/swram_robot_mapping_tutorial")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/devel/lib/python2.7/dist-packages/swram_robot_mapping_tutorial")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/devel/lib/python2.7/dist-packages/swram_robot_mapping_tutorial")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/catkin_generated/installspace/swram_robot_mapping_tutorial.pc")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/swram_robot_mapping_tutorial/cmake" TYPE FILE FILES "/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/catkin_generated/installspace/swram_robot_mapping_tutorial-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)

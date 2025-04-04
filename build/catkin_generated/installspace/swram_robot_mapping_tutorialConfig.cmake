@@ -177,7 +177,7 @@ foreach(library ${libraries})
   endif()
 endforeach()
 
-set(swram_robot_mapping_tutorial_EXPORTED_TARGETS "")
+set(swram_robot_mapping_tutorial_EXPORTED_TARGETS "swram_robot_mapping_tutorial_generate_messages_cpp;swram_robot_mapping_tutorial_generate_messages_eus;swram_robot_mapping_tutorial_generate_messages_lisp;swram_robot_mapping_tutorial_generate_messages_nodejs;swram_robot_mapping_tutorial_generate_messages_py")
 # create dummy targets for exported code generation targets to make life of users easier
 foreach(t ${swram_robot_mapping_tutorial_EXPORTED_TARGETS})
   if(NOT TARGET ${t})
@@ -214,7 +214,7 @@ foreach(depend ${depends})
   list(APPEND swram_robot_mapping_tutorial_EXPORTED_TARGETS ${${swram_robot_mapping_tutorial_dep}_EXPORTED_TARGETS})
 endforeach()
 
-set(pkg_cfg_extras "")
+set(pkg_cfg_extras "swram_robot_mapping_tutorial-msg-extras.cmake")
 foreach(extra ${pkg_cfg_extras})
   if(NOT IS_ABSOLUTE ${extra})
     set(extra ${swram_robot_mapping_tutorial_DIR}/${extra})

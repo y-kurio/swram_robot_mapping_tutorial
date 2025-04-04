@@ -16,17 +16,24 @@
 #include <cmath>
 #include <tf2/LinearMath/Quaternion.h>
 #include <geometry_msgs/Quaternion.h>
+#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/Pose2D.h>
+#include <std_msgs/Float64.h>
+#include <tf2/LinearMath/Matrix3x3.h>
+#include <std_msgs/Int8.h>
+
 
 std::string FRAME_ROBOT_BASE;
-double param1,param2;
+double goal_torelanse;
+geometry_msgs::Twist cmd_vel;
+std_msgs::Int8 goal_status;
 tf2_ros::Buffer tf_buffer_;
 geometry_msgs::PointStamped odom_point;
 geometry_msgs::PoseStamped target_point;
-actionlib_msgs::GoalStatusArray action_data_, pre_action_data_;
-nav_msgs::Odometry odomdata_,sub_odomdata_;
-double idoutyou_,move_pose_,move_pose_x_,move_pose_y_,pre_dis,newposdis,x_,y_,x_1_,x_2_,SSS_,goal,currentpos_x,currentpos_y;
-ros::Publisher new_vel_pub;
-geometry_msgs::PoseStamped sub_pose_out;
-geometry_msgs::TransformStamped sub_transformStamped;
+geometry_msgs::PoseStamped target_goal, d_goal;
+nav_msgs::Odometry odomdata_;
+double goal_hani_;
+ros::Publisher cmd_vel_pub;
+ros::Publisher goal_status_pub;
 // static bool is_variable_set = false;
 

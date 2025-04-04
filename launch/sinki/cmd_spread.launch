@@ -1,0 +1,15 @@
+<launch>
+<arg name="multi_robot"                     default="robot_1"/>
+    <group ns="$(arg multi_robot)">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="0.33"/>
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="goal_torelanse"      value="0.10"/>
+        </node>
+    </group>
+        
+</launch>

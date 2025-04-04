@@ -9,7 +9,7 @@
 #include <pcl/search/kdtree.h>
 #include <laser_geometry/laser_geometry.h>
 #include <vector>
-#include <map>
+#include <swram_robot_mapping_tutorial/cluster_data.h>
 
 class LRFClustering {
 private:
@@ -18,15 +18,21 @@ private:
     ros::Publisher cluster_pub_;
     laser_geometry::LaserProjection projector_;
 
+    int wall_threshold_;  // 障害物と壁を分ける閾値
+
 public:
-    LRFClustering() {
-        laser_sub_ = nh_.subscribe("/main/scan", 10, &LRFClustering::laserCallback, this);
-        cluster_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("/clustered_points", 10);
+    LRFClustering() : wall_threshold_(100) {  // デフォルト値
+        ros::NodeHandle private_nh("~");
+        private_nh.param("wall_threshold", wall_threshold_, 100);  // パラメータ化
+
+        laser_sub_ = nh_.subscribe("scan", 10, &LRFClustering::laserCallback, this);
+        cluster_pub_ = nh_.advertise<swram_robot_mapping_tutorial::cluster_data>("clustered_points", 10);
     }
 
     void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan) {
         // LaserScanをPointCloud2に変換
         sensor_msgs::PointCloud2 cloud;
+        swram_robot_mapping_tutorial::cluster_data cluster_data;
         projector_.projectLaser(*scan, cloud);
 
         // PointCloud2をPCL形式に変換
@@ -52,42 +58,36 @@ public:
         pcl::PointCloud<pcl::PointXYZI>::Ptr clustered_cloud(new pcl::PointCloud<pcl::PointXYZI>);
 
         for (int cluster_id = 0; cluster_id < cluster_indices.size(); ++cluster_id) {
-            double sum_x = 0.0, sum_y = 0.0, sum_z = 0.0;
             size_t num_points = cluster_indices[cluster_id].indices.size();
+
+            cluster_data.cluster_number[cluster_id] = cluster_id;
+
+            // クラスタサイズで分類
+            float cluster_type = (num_points >= wall_threshold_) ? 2.0 : 1.0;
+            std::string label = (cluster_type == 2.0) ? "Wall" : "Obstacle";
+
+            cluster_data.cluster_type[cluster_id] = cluster_type;
+
+            ROS_INFO("Cluster ID: %d, Size: %zu -> Classified as: %s", cluster_id, num_points, label.c_str());
 
             for (const auto& idx : cluster_indices[cluster_id].indices) {
                 pcl::PointXYZI point;
                 point.x = pcl_cloud->points[idx].x;
                 point.y = pcl_cloud->points[idx].y;
                 point.z = pcl_cloud->points[idx].z;
-                point.intensity = static_cast<float>(cluster_id);  // クラスタIDをintensityに格納
+                cluster_data.cluster_points[cluster_id].polygon.points[idx].x = pcl_cloud->points[idx].x;
+                cluster_data.cluster_points[cluster_id].polygon.points[idx].y = pcl_cloud->points[idx].y;
+                cluster_data.cluster_points[cluster_id].polygon.points[idx].z = pcl_cloud->points[idx].z;
+                point.intensity = cluster_type;  // 1.0 = 障害物, 2.0 = 壁
                 clustered_cloud->points.push_back(point);
-
-                // 重心計算用に座標を加算
-                sum_x += point.x;
-                sum_y += point.y;
-                sum_z += point.z;
             }
-
-            // 重心を計算
-            pcl::PointXYZI centroid_point;
-            centroid_point.x = sum_x / num_points;
-            centroid_point.y = sum_y / num_points;
-            centroid_point.z = sum_z / num_points;
-            centroid_point.intensity = static_cast<float>(cluster_id) + 100; // 重心は異なるintensityでマーク
-
-            clustered_cloud->points.push_back(centroid_point);
-
-            // ログ出力
-            ROS_INFO("Cluster ID: %d, Centroid - x: %.2f, y: %.2f, z: %.2f",
-                     cluster_id, centroid_point.x, centroid_point.y, centroid_point.z);
         }
 
         // PointCloud2メッセージとして送信
         sensor_msgs::PointCloud2 output;
         pcl::toROSMsg(*clustered_cloud, output);
-        output.header = cloud.header;
-        cluster_pub_.publish(output);
+        cluster_data.header = cloud.header;
+        cluster_pub_.publish(cluster_data);
     }
 };
 
@@ -97,3 +97,4 @@ int main(int argc, char** argv) {
     ros::spin();
     return 0;
 }
+

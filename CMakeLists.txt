@@ -27,11 +27,21 @@ find_package(catkin REQUIRED COMPONENTS
 # find_package(Boost REQUIRED COMPONENTS system)
 
 
+add_message_files(
+  FILES
+  cluster_data.msg
+)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 # catkin_python_setup()
 
+generate_messages(
+  DEPENDENCIES
+  sensor_msgs
+  std_msgs
+  geometry_msgs
+)
 ################################################
 ## Declare ROS messages, services and actions ##
 ################################################
@@ -55,6 +65,7 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .msg/.srv/.action file to be processed
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
+
 
 # generate_messages(
 #   DEPENDENCIES
@@ -146,6 +157,8 @@ include_directories(
  add_executable(${PROJECT_NAME}_node src/test2.cpp)
  add_executable(keisoku src/keisoku.cpp)
  add_executable(cluster_odom src/cluster_odom.cpp)
+ add_executable(cmd_vel src/cmd_vel.cpp)
+ add_executable(cmd_goal src/cmd_goal.cpp)
 #  add_executable(${PROJECT_NAME}_ms 
 #   src/move_spreading/constructor.cpp
 #   src/move_spreading/debug_main.cpp
@@ -171,6 +184,14 @@ target_link_libraries(keisoku
   ${PCL_LIBRARIES}
 )
 target_link_libraries(cluster_odom
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+target_link_libraries(cmd_vel
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+target_link_libraries(cmd_goal
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )

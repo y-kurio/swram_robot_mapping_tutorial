@@ -23,9 +23,11 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <geometry_msgs/Vector3.h>
+#include <std_msgs/Int8.h>
 
 std::string FRAME_ROBOT_BASE;
 double param1,param2;
+std_msgs::Int8 goal_status;
 tf2_ros::Buffer tf_buffer_;
 geometry_msgs::PointStamped odom_point;
 geometry_msgs::PoseStamped target_point;
@@ -38,7 +40,8 @@ double idoutyou_,move_pose_,move_pose_x_,move_pose_y_,pre_dis,newposdis,x_,y_,x_
 ros::Publisher newgoal_pub;
 ros::Publisher marker_pub,marker_sub_goal_pub;
 double MIN_kyori;
-int number;
+int number, angle_degrees;
+double random_angle;
 geometry_msgs::Vector3 group_radius;
 geometry_msgs::PoseStamped sub_pose_out;
 geometry_msgs::TransformStamped sub_transformStamped;
