@@ -157,8 +157,10 @@ include_directories(
  add_executable(${PROJECT_NAME}_node src/test2.cpp)
  add_executable(keisoku src/keisoku.cpp)
  add_executable(cluster_odom src/cluster_odom.cpp)
+ add_executable(sub_cluster_odom src/sub_cluster_odom.cpp)
  add_executable(cmd_vel src/cmd_vel.cpp)
  add_executable(cmd_goal src/cmd_goal.cpp)
+ add_executable(potensyaru src/potensyaru.cpp)
 #  add_executable(${PROJECT_NAME}_ms 
 #   src/move_spreading/constructor.cpp
 #   src/move_spreading/debug_main.cpp
@@ -187,11 +189,19 @@ target_link_libraries(cluster_odom
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
+target_link_libraries(sub_cluster_odom
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
 target_link_libraries(cmd_vel
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
 target_link_libraries(cmd_goal
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+target_link_libraries(potensyaru
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )

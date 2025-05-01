@@ -1,0 +1,13 @@
+<launch>
+<arg name="multi_robot"                     default="main"/>
+    <group ns="$(arg multi_robot)">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)/odom"/>
+            <!-- ロボットのサイズが訳30cmでありそれの二倍を取る -->
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group>
+        
+</launch>

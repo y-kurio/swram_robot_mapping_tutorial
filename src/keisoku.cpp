@@ -21,7 +21,7 @@ private:
     int wall_threshold_;  // 障害物と壁を分ける閾値
 
 public:
-    LRFClustering() : wall_threshold_(100) {  // デフォルト値
+    LRFClustering() : wall_threshold_(60) {  // デフォルト値
         ros::NodeHandle private_nh("~");
         private_nh.param("wall_threshold", wall_threshold_, 100);  // パラメータ化
 
@@ -52,13 +52,23 @@ public:
         ec.setInputCloud(pcl_cloud);
         ec.extract(cluster_indices);
 
-        ROS_INFO("Number of clusters found: %zu", cluster_indices.size());
 
         // クラスタIDを付けて全座標を集約
-        pcl::PointCloud<pcl::PointXYZI>::Ptr clustered_cloud(new pcl::PointCloud<pcl::PointXYZI>);
+        // pcl::PointCloud<pcl::PointXYZI>::Ptr clustered_cloud(new pcl::PointCloud<pcl::PointXYZI>);
 
         for (int cluster_id = 0; cluster_id < cluster_indices.size(); ++cluster_id) {
             size_t num_points = cluster_indices[cluster_id].indices.size();
+
+            // 各 vector のサイズ確保
+            if (cluster_data.cluster_number.size() <= cluster_id) {
+                cluster_data.cluster_number.resize(cluster_id + 1);
+            }
+            if (cluster_data.cluster_type.size() <= cluster_id) {
+                cluster_data.cluster_type.resize(cluster_id + 1);
+            }
+            if (cluster_data.cluster_points.size() <= cluster_id) {
+                cluster_data.cluster_points.resize(cluster_id + 1);
+            }
 
             cluster_data.cluster_number[cluster_id] = cluster_id;
 
@@ -71,21 +81,24 @@ public:
             ROS_INFO("Cluster ID: %d, Size: %zu -> Classified as: %s", cluster_id, num_points, label.c_str());
 
             for (const auto& idx : cluster_indices[cluster_id].indices) {
-                pcl::PointXYZI point;
-                point.x = pcl_cloud->points[idx].x;
-                point.y = pcl_cloud->points[idx].y;
-                point.z = pcl_cloud->points[idx].z;
-                cluster_data.cluster_points[cluster_id].polygon.points[idx].x = pcl_cloud->points[idx].x;
-                cluster_data.cluster_points[cluster_id].polygon.points[idx].y = pcl_cloud->points[idx].y;
-                cluster_data.cluster_points[cluster_id].polygon.points[idx].z = pcl_cloud->points[idx].z;
-                point.intensity = cluster_type;  // 1.0 = 障害物, 2.0 = 壁
-                clustered_cloud->points.push_back(point);
+                // pcl::PointXYZI point;
+                // point.x = pcl_cloud->points[idx].x;
+                // point.y = pcl_cloud->points[idx].y;
+                // point.z = pcl_cloud->points[idx].z;
+                geometry_msgs::Point32 p;
+                p.x = pcl_cloud->points[idx].x;
+                p.y = pcl_cloud->points[idx].y;
+                p.z = pcl_cloud->points[idx].z;
+                cluster_data.cluster_points[cluster_id].polygon.points.push_back(p);
+                cluster_data.cluster_type[cluster_id] = cluster_type;  // 1.0 = 障害物, 2.0 = 壁
+                // clustered_cloud->points.push_back(point);
             }
+            cluster_data.cluster_number[cluster_id] = cluster_id;
         }
 
         // PointCloud2メッセージとして送信
-        sensor_msgs::PointCloud2 output;
-        pcl::toROSMsg(*clustered_cloud, output);
+        // sensor_msgs::PointCloud2 output;
+        // pcl::toROSMsg(*clustered_cloud, output);
         cluster_data.header = cloud.header;
         cluster_pub_.publish(cluster_data);
     }

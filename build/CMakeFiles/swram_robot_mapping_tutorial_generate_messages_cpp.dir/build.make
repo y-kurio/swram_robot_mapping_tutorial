@@ -58,9 +58,10 @@ CMakeFiles/swram_robot_mapping_tutorial_generate_messages_cpp: devel/include/swr
 
 devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/lib/gencpp/gen_cpp.py
 devel/include/swram_robot_mapping_tutorial/cluster_data.h: ../msg/cluster_data.msg
-devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/geometry_msgs/msg/Polygon.msg
-devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/geometry_msgs/msg/PolygonStamped.msg
 devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/geometry_msgs/msg/Point32.msg
+devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/geometry_msgs/msg/PolygonStamped.msg
+devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/geometry_msgs/msg/Point.msg
+devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/geometry_msgs/msg/Polygon.msg
 devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/std_msgs/msg/Header.msg
 devel/include/swram_robot_mapping_tutorial/cluster_data.h: /opt/ros/melodic/share/gencpp/msg.h.template
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating C++ code from swram_robot_mapping_tutorial/cluster_data.msg"

@@ -96,7 +96,8 @@ std::vector<geometry_msgs::PointStamped> pre_point;
 nav_msgs::Odometry odomdata_;
 geometry_msgs::PoseStamped pose_out_;        
 std::vector<geometry_msgs::PointStamped> pose_out;
-ros::Publisher spreading_pub;
+ros::Publisher spreading_pub, clusterling_pub;
+geometry_msgs::Vector3 MIN_kyori;
 swram_robot_mapping_tutorial::cluster_data cluster_data;
 
 void clusterCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr& msg) {
@@ -131,7 +132,16 @@ void clusterCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr&
 
     for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
         for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) {
-            std::vector<geometry_msgs::PointStamped> pre_point;
+             // 各 vector のサイズ確保
+             if (cluster_data.cluster_number.size() <= cluster_id) {
+                cluster_data.cluster_number.resize(cluster_id + 1);
+            }
+            if (cluster_data.cluster_type.size() <= cluster_id) {
+                cluster_data.cluster_type.resize(cluster_id + 1);
+            }
+            if (cluster_data.cluster_points.size() <= cluster_id) {
+                cluster_data.cluster_points.resize(cluster_id + 1);
+            }
             pre_point.resize(cluster_data.cluster_points[cluster_id].polygon.points.size());
             // pre_point.push_back(point_msg_array[i]);
             pre_point[i].header = cluster_data.header;
@@ -167,6 +177,13 @@ void clusterCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr&
 }
 
 void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
+    int count_orientation = 0;
+    for (int i = 0; i < cluster_data.cluster_type.size(); ++i) {
+        if (cluster_data.cluster_type[i] == 1.0) {
+            count_orientation++;
+        }
+    }
+    cluster_data.orientation.resize(count_orientation); // 必ず先にサイズ確保
     odomdata_ = *msg;
     geometry_msgs::PointStamped odom_point;
     odom_point.header = odomdata_.header;
@@ -177,7 +194,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     pre_point_.pose = odomdata_.pose.pose;
     
     geometry_msgs::TransformStamped transformStamped;
-    geometry_msgs::Vector3 MIN_kyori;
+    double kyori;
     MIN_kyori.z = std::numeric_limits<double>::max();
     
     try
@@ -195,7 +212,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
         for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
         {
-            double kyori = sqrt(pow(cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x , 2) + pow(cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y , 2));
+            kyori = sqrt(pow(cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x , 2) + pow(cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y , 2));
             if (kyori < MIN_kyori.z && cluster_data.cluster_type[cluster_id] == 2.0)
             {
                 MIN_kyori.x = cluster_data.cluster_points[cluster_id].polygon.points[i].x;
@@ -203,16 +220,24 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
                 MIN_kyori.z = kyori;
             }
         }
-    }
-
-    for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
-        int size = cluster_data.cluster_points[cluster_id].polygon.points.size();
-        MIN_kyori.x = cluster_data.cluster_points[cluster_id].polygon.points[0].x;
-        MIN_kyori.y = cluster_data.cluster_points[cluster_id].polygon.points[size-1].y;
+        if (cluster_data.cluster_type[cluster_id] == 1.0)
+        {
+            int size = cluster_data.cluster_points[cluster_id].polygon.points.size();
+            cluster_data.orientation[cluster_id].x = atan2(cluster_data.cluster_points[cluster_id].polygon.points[0].y, cluster_data.cluster_points[cluster_id].polygon.points[0].x);
+            cluster_data.orientation[cluster_id].y = atan2(cluster_data.cluster_points[cluster_id].polygon.points[size-1].y, cluster_data.cluster_points[cluster_id].polygon.points[size-1].x);
+            if (cluster_data.orientation[cluster_id].x < cluster_data.orientation[cluster_id].y)
+            {
+                cluster_data.orientation[cluster_id].x = atan2(cluster_data.cluster_points[cluster_id].polygon.points[size-1].y, cluster_data.cluster_points[cluster_id].polygon.points[size-1].x);
+                cluster_data.orientation[cluster_id].y = atan2(cluster_data.cluster_points[cluster_id].polygon.points[0].y, cluster_data.cluster_points[cluster_id].polygon.points[0].x);
+            }
+            
+        ROS_INFO("kakudo: %f, %f", cluster_data.orientation[cluster_id].x, cluster_data.orientation[cluster_id].y);
+        }
     }
 
     // ROS_INFO("spreadinghannkei-----%.2f",MIN_kyori.z);
     spreading_pub.publish(MIN_kyori);
+    // clusterling_pub.publish(cluster_data);
 }
 
 int main(int argc, char** argv) {
@@ -225,6 +250,7 @@ static tf2_ros::TransformListener tfListener(tf_buffer_);
     ros::Subscriber cluster_sub = nh.subscribe("clustered_points", 10, clusterCallback);
     ros::Subscriber encoder_sub = nh.subscribe("odom", 10, encoderCallback);
     spreading_pub = nh.advertise<geometry_msgs::Vector3>("/Group_radius", 10);
+    // clusterling_pub = nh.advertise<swram_robot_mapping_tutorial::cluster_data>("clusterdata", 10);
 
     ros::spin();
     return 0;

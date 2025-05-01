@@ -3,9 +3,9 @@
     <group ns="$(arg multi_robot)">
         <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
         </node>
-        <!-- <node pkg="swram_robot_mapping_tutorial" type="cluster_odom" name="cluster_odom" output="screen">
+        <node pkg="swram_robot_mapping_tutorial" type="cluster_odom" name="cluster_odom" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)/odom"/>
-        </node> -->
+        </node>
     </group>
         
 </launch>

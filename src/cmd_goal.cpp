@@ -18,6 +18,11 @@ void Group_radiusCallback(const geometry_msgs::Vector3::ConstPtr& msg)
     }
 }
 
+void clusterlingCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr& msg)
+{
+    cluster_result = *msg;
+}
+
 double ggetRandomAngle() {
     // 乱数エンジンの初期化
     std::random_device rd;
@@ -27,7 +32,30 @@ double ggetRandomAngle() {
     std::uniform_real_distribution<> dis(-180.0, 180.0);
 
     // do {
-        angle_degrees = dis(gen); // ランダムな角度を生成
+    angle_degrees = dis(gen); // ランダムな角度を生成
+    for (int cluster_id = 0; cluster_id < cluster_result.cluster_type.size(); ++cluster_id) 
+    {
+        double X = cluster_result.orientation[cluster_id].x * 180 / M_PI;
+        double Y = cluster_result.orientation[cluster_id].y * 180 / M_PI;
+        if (cluster_result.cluster_type[cluster_id] == 1.0)
+        {
+            if (X  > Y)
+            {
+                if (X > angle_degrees && Y < angle_degrees)
+                {
+                    return ggetRandomAngle();
+                }
+            }
+            if (X  < Y)
+            {
+                if (X < angle_degrees && Y > angle_degrees)
+                {
+                    return ggetRandomAngle();
+                }
+            }
+        }
+    }
+        
     // } while (isExcluded(angle_degrees, excluded_ranges)); // 除外範囲に含まれる場合は再抽選
     // 生成された度数法の角度をラジアンに変換して返す
     return random_angle = angle_degrees * M_PI / 180.0;
@@ -214,7 +242,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         sub_goal.pose.orientation.z = 0.00758096193567;
         sub_goal.pose.orientation.w = 0.999963809901;
         // number = 1;
-        ROS_INFO("retsart!!");
+        ROS_INFO("restart!!");
         goalpublisher();
     }
     visualization_msgs::Marker marker;
@@ -300,6 +328,7 @@ int main(int argc, char** argv)
     marker_pub = nh.advertise<visualization_msgs::Marker>("visualization_marker", 10);
     marker_sub_goal_pub = nh.advertise<visualization_msgs::Marker>("marker_sub_goal", 10);
     ros::Subscriber Group_radius = nh.subscribe("/Group_radius", 10, Group_radiusCallback);
+    ros::Subscriber clusterling_sub = nh.subscribe("clusterdata", 10, clusterlingCallback);
     ros::Subscriber encoder_sub = nh.subscribe("/main/odom", 10, encoderCallback);
     ros::Subscriber goal_action_sub = nh.subscribe("goal_status", 10, goalactionCallback);
     newgoal_pub = nh.advertise<geometry_msgs::PoseStamped>("sub_goal_position", 10);

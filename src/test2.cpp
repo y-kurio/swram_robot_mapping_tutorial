@@ -8,7 +8,7 @@ void goalactionCallback(const actionlib_msgs::GoalStatusArray::ConstPtr& msg)
 void Group_radiusCallback(const geometry_msgs::Vector3::ConstPtr& msg)
 {
     group_radius = *msg;
-    MIN_kyori = 6.0;
+    MIN_kyori = group_radius.x;
     if (group_radius.x == 0.0 && group_radius.y == 0.0) 
     {
         // ROS_INFO("kara");

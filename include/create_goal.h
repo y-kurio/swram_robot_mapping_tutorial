@@ -24,6 +24,7 @@
 #include <pcl/point_types.h>
 #include <geometry_msgs/Vector3.h>
 #include <std_msgs/Int8.h>
+#include <swram_robot_mapping_tutorial/cluster_data.h>
 
 std::string FRAME_ROBOT_BASE;
 double param1,param2;
@@ -52,3 +53,4 @@ geometry_msgs::TransformStamped sub_transformStamped;
 // PointStamped型の配列を格納するベクター
 std::vector<geometry_msgs::PointStamped> point_msg_array_;
 std::vector<std::string> cluster_no_;
+swram_robot_mapping_tutorial::cluster_data cluster_result;
