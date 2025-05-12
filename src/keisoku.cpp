@@ -10,6 +10,7 @@
 #include <laser_geometry/laser_geometry.h>
 #include <vector>
 #include <swram_robot_mapping_tutorial/cluster_data.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 class LRFClustering {
 private:

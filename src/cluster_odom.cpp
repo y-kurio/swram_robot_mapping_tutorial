@@ -88,6 +88,7 @@
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Vector3.h>
 #include <swram_robot_mapping_tutorial/cluster_data.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 tf2_ros::Buffer tf_buffer_;
 std::string FRAME_ROBOT_BASE;

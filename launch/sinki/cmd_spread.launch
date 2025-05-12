@@ -9,6 +9,11 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.10"/>
+            <param name="attractive_gain"      value="0.10"/>
+            <param name="repulsive_gain"      value="0.10"/>
+            <param name="repulsive_range"      value="0.10"/>
+            <param name="grid_size"      value="0.10"/>
+            <param name="grid_resolution"      value="0.10"/>
         </node>
     </group>
         

@@ -29,8 +29,8 @@ public:
     PotentialFieldPlanner() : pnh_("~") {
         // パラメータの読み込み（YAMLやlaunchファイルから設定可能）
         pnh_.param("attractive_gain", attractive_gain_, 1.0);
-        pnh_.param("repulsive_gain", repulsive_gain_, 1.0);
-        pnh_.param("repulsive_range", repulsive_range_, 1.0);
+        pnh_.param("repulsive_gain", repulsive_gain_, 3.0);
+        pnh_.param("repulsive_range", repulsive_range_, 4.0);
         pnh_.param("grid_size", grid_size_, 10.0);
         pnh_.param("grid_resolution", grid_resolution_, 0.2);
 
@@ -158,7 +158,7 @@ public:
         double grad_magnitude = std::sqrt(fx * fx + fy * fy);
 
         geometry_msgs::Twist cmd;
-        cmd.linear.x = std::min(0.5, grad_magnitude * 0.2);  // 前進速度（最大0.5）
+        cmd.linear.x = std::min(0.2, grad_magnitude * 0.2);  // 前進速度（最大0.5）
         cmd.linear.y = 0.0;  // 差動二輪は横移動不可
         cmd.angular.z = std::max(-1.0, std::min(1.0, yaw_error));  // 回転速度（±1制限）
 

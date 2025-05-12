@@ -17,8 +17,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   message_generation
-  potbot_lib
-  potbot_msgs
+  tf2_geometry_msgs
+  laser_geometry 
+  # potbot_lib
+  # potbot_msgs
   pcl_ros
   pcl_conversions
 )
@@ -124,8 +126,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp sensor_msgs message_runtime
-  LIBRARIES ${PROJECT_NAME} potbot_lib
+  CATKIN_DEPENDS roscpp sensor_msgs message_runtime tf2_geometry_msgs laser_geometry
+  # LIBRARIES ${PROJECT_NAME} potbot_lib
 #  DEPENDS system_lib
 )
 
@@ -205,6 +207,7 @@ target_link_libraries(potensyaru
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
+
 # target_link_libraries(${PROJECT_NAME}_ms
 #   ${catkin_LIBRARIES}
 # )

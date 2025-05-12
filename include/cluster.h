@@ -22,6 +22,7 @@
 #include <cmath>
 #include <tf2/LinearMath/Quaternion.h>
 #include <geometry_msgs/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 std::string FRAME_ROBOT_BASE;
 
