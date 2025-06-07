@@ -27,7 +27,7 @@
 
 
 std::string FRAME_ROBOT_BASE;
-double goal_torelanse;
+double goal_torelanse, goal_torelanse_2;
 geometry_msgs::Twist cmd_vel;
 std_msgs::Int8 goal_status;
 tf2_ros::Buffer tf_buffer_;

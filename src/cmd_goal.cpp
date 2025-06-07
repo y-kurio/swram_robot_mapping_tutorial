@@ -11,7 +11,7 @@ void Group_radiusCallback(const geometry_msgs::Vector3::ConstPtr& msg)
 {
     group_radius = *msg;
     MIN_kyori = group_radius.z;
-    if (group_radius.x == 0.0 && group_radius.y == 0.0) 
+    if (group_radius.z == 0.0) 
     {
         // ROS_INFO("kara");
         MIN_kyori = 6.0;
@@ -232,10 +232,11 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     else if ( kyori > MIN_kyori && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
     {
         // ロボットの位置を更新
+        ggetRandomAngle();
         sub_goal.header.frame_id = FRAME_ROBOT_BASE;
         sub_goal.header.stamp = ros::Time::now();
-        sub_goal.pose.position.x = pose_out.pose.position.x;
-        sub_goal.pose.position.y = pose_out.pose.position.y;
+        sub_goal.pose.position.x = 1.5*cos(random_angle) + pose_out.pose.position.x;
+        sub_goal.pose.position.y = 1.5*sin(random_angle) + pose_out.pose.position.y;
         sub_goal.pose.position.z = 0.0;
         sub_goal.pose.orientation.x = -00000.365853737606;
         sub_goal.pose.orientation.y = 0.00386090210218;
@@ -262,7 +263,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         geometry_msgs::Point p;
         p.x = center_x + radius * cos(theta);
         p.y = center_y + radius * sin(theta);
-        p.z = 0.0;
+        p.z = 0.1;
         marker.points.push_back(p);
     }
 

@@ -2,7 +2,10 @@
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <!-- <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/empty.world"/> -->
-    <arg name="world_name" value="$(find swram_robot_mapping_tutorial)/launch/sinki/empty.world"/>
+    <arg name="world_name" value="$(find swram_robot_mapping_tutorial)/launch/sinki/sunadokei.world"/>
+    <!-- 横11.5,7.8m縦11ｍ,間4m -->
+    <!-- <arg name="world_name" value="$(find swram_robot_mapping_tutorial)/launch/sinki/sunadokei3m.world"/> -->
+    <!-- 横7,7.5m縦10ｍ,間3m -->
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
@@ -19,7 +22,7 @@
       <arg name="yaw"             value="0.00"/>
   </include>
 
-  <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/turtlebot3_spawnvol1.launch">
+  <include file="$(find swram_robot_mapping_tutorial)/launch/turtlebot3_spawnvol1.launch">
       <arg name="tf_prefix"       value="robot_2"/>
       <arg name="model"           value="waffle"/>
       <arg name="x_pos"           value="0.0"/>
@@ -35,6 +38,6 @@
       <arg name="y_pos"           value="0.0"/>
       <arg name="z_pos"           value="0.0"/>
       <arg name="yaw"             value=".0"/>
-  </include> -->
+  </include>
 
 </launch>

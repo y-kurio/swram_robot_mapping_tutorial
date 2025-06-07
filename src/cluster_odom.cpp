@@ -184,7 +184,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
             count_orientation++;
         }
     }
-    cluster_data.orientation.resize(count_orientation); // 必ず先にサイズ確保
+    cluster_data.orientation.resize(count_orientation + 1); // 必ず先にサイズ確保
     odomdata_ = *msg;
     geometry_msgs::PointStamped odom_point;
     odom_point.header = odomdata_.header;
@@ -236,9 +236,17 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
         }
     }
 
-    // ROS_INFO("spreadinghannkei-----%.2f",MIN_kyori.z);
+    if (MIN_kyori.z < 100)
+    {
+        ROS_INFO("spreadinghannkei-----%.2f",MIN_kyori.z);
     spreading_pub.publish(MIN_kyori);
     // clusterling_pub.publish(cluster_data);
+    }else 
+    {
+        MIN_kyori.z = 0.0;
+        spreading_pub.publish(MIN_kyori);
+    }
+    
 }
 
 int main(int argc, char** argv) {
