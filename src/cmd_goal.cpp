@@ -145,8 +145,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         move_pose_x_ = pose_out.pose.position.x + x_;
         move_pose_y_ = pose_out.pose.position.y + y_;
         move_pose_ = sqrt(x_*x_ + y_*y_);
-        pre_dis = sqrt((sub_pose_out.pose.position.x - 0.0)*(sub_pose_out.pose.position.x - 0.0) + (sub_pose_out.pose.position.y - 0.0)*(sub_pose_out.pose.position.y - 0.0));
-        newposdis = sqrt((move_pose_x_ - 0.0)*(move_pose_x_ - 0.0) + (move_pose_y_ - 0.0)*(move_pose_y_ - 0.0));
+        pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.x), 2));
+        newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
         x_1_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((pre_dis - heikinnti)*(pre_dis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
         x_2_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((newposdis - heikinnti)*(newposdis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
         SSS_ = x_2_ / x_1_;
@@ -193,8 +193,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         move_pose_x_ = pose_out.pose.position.x + x_;
         move_pose_y_ = pose_out.pose.position.y + y_;
         move_pose_ = sqrt(x_*x_ + y_*y_);
-        pre_dis = sqrt((sub_pose_out.pose.position.x - pose_out.pose.position.x)*(sub_pose_out.pose.position.x - pose_out.pose.position.x) + (sub_pose_out.pose.position.y - pose_out.pose.position.y)*(sub_pose_out.pose.position.y - pose_out.pose.position.y));
-        newposdis = sqrt((move_pose_x_ - pose_out.pose.position.x)*(move_pose_x_ - pose_out.pose.position.x) + (move_pose_y_ - pose_out.pose.position.y)*(move_pose_y_ - pose_out.pose.position.y));
+        pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.x), 2));
+        newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
         x_1_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((pre_dis - heikinnti)*(pre_dis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
         x_2_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((newposdis - heikinnti)*(newposdis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
         SSS_ = x_2_ / x_1_;
