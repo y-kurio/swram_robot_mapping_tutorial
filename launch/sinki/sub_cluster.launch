@@ -1,13 +1,77 @@
 <launch>
 <arg name="multi_robot"                     default="main"/>
-    <group ns="$(arg multi_robot)">
+    <group ns="$(arg multi_robot)_1">
         <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
-            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)/odom"/>
-            <!-- ロボットのサイズが訳30cmでありそれの二倍を取る -->
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_1/odom"/>
             <param name="ROBOT_SIZE"      value="0.6"/> 
         </node>
     </group>
+        
+        
+    <group ns="$(arg multi_robot)_2">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_2/odom"/>
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group>
+        
+    <!-- <group ns="$(arg multi_robot)_3">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_3/odom"/>
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_4">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_4/odom"/>
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_5">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_5/odom"/>
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_6">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_6/odom"/>
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_7">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_7/odom"/>
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_8">
+        <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
+        </node>
+        <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="$(arg multi_robot)_8/odom"/>
+            ロボットのサイズが訳30cmでありそれの二倍を取る
+            <param name="ROBOT_SIZE"      value="0.6"/> 
+        </node>
+    </group> -->
         
 </launch>

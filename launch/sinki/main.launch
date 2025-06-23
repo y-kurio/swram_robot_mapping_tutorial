@@ -18,15 +18,15 @@
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
     </include>
 
-  <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+  <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
       <arg name="tf_prefix"       value="$(arg multi_robot)"/>
   </include>
 
-  <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/rtabmap_demo.launch">
+  <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/rtabmap_demo.launch">
       <arg name="tf_prefix"       value="$(arg multi_robot)"/>
   </include> -->
 
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  <!-- <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
       <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
       <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
@@ -44,7 +44,7 @@
       <remap from="cmd_vel"                             to="cmd_vel"/>
       <remap from="odom"                                to="odom"/>
       <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
-    </node>  
+    </node>   -->
   
   <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/test2.launch">
   </include> -->

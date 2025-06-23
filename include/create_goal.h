@@ -26,6 +26,7 @@
 #include <std_msgs/Int8.h>
 #include <swram_robot_mapping_tutorial/cluster_data.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <Eigen/Dense>
 
 std::string FRAME_ROBOT_BASE;
 double param1,param2;

@@ -11,29 +11,69 @@
   <arg name="multi_robot"                     default="robot_1"/>
   <arg name="use_rviz"                        default="$(arg rviz)"/>
 
-  <group ns="$(arg multi_robot)">
+  <group ns="$(arg multi_robot)_1">
 
     <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
-      <arg name="multi_robot"                   value="$(arg multi_robot)"/>
+      <arg name="multi_robot"                   value="$(arg multi_robot)_1"/>
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
     </include>
-
-  <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
-      <arg name="tf_prefix"       value="$(arg multi_robot)"/>
-  </include>
-
-  <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/rtabmap_demo.launch">
-      <arg name="tf_prefix"       value="$(arg multi_robot)"/>
-  </include>
-
-  <include file="$(find swram_robot_mapping_tutorial)/launch/navigation.launch">
-      <arg name="tf_prefix"       value="$(arg multi_robot)"/>
-  </include> -->
-  
-  <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/test2.launch">
-  </include> -->
-
   </group>
+
+  <group ns="$(arg multi_robot)_2">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)_2"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+  </group>
+
+  <!-- <group ns="$(arg multi_robot)_3">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)_3"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+  </group>
+
+  <group ns="$(arg multi_robot)_4">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)_4"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+  </group>
+
+  <group ns="$(arg multi_robot)_5">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)_5"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+  </group>
+
+  <group ns="$(arg multi_robot)_6">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)_6"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+  </group>
+
+  <group ns="$(arg multi_robot)_7">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)_7"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+  </group>
+
+  <group ns="$(arg multi_robot)_8">
+
+    <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
+      <arg name="multi_robot"                   value="$(arg multi_robot)_8"/>
+      <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+  </group> -->
   
 
 </launch>
