@@ -42,14 +42,18 @@ nav_msgs::Odometry odomdata_,sub_odomdata_;
 double idoutyou_,move_pose_,move_pose_x_,move_pose_y_,pre_dis,newposdis,x_,y_,x_1_,x_2_,SSS_,goal,currentpos_x,currentpos_y;
 ros::Publisher newgoal_pub;
 ros::Publisher marker_pub,marker_sub_goal_pub;
-double MIN_kyori;
+double MIN_kyori_x, MIN_kyori_y, MIN_kyori_z, MIN_kyori;
 int number, angle_degrees;
 double random_angle;
 geometry_msgs::Vector3 group_radius;
 geometry_msgs::PoseStamped sub_pose_out;
 geometry_msgs::TransformStamped sub_transformStamped;
+        Eigen::Matrix2d A;
+        Eigen::Vector2d pre_x;
+        Eigen::Vector2d new_x;
         double myu_;
         double sigma_;
+        double Vyy, Vxx, Vxy;
 // static bool is_variable_set = false;
 
 // PointStamped型の配列を格納するベクター

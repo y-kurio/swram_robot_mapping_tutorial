@@ -162,6 +162,7 @@ include_directories(
  add_executable(sub_cluster_odom src/sub_cluster_odom.cpp)
  add_executable(cmd_vel src/cmd_vel.cpp)
  add_executable(cmd_goal src/cmd_goal.cpp)
+ add_executable(cmd_goal_2d src/cmd_goal_2d.cpp)
  add_executable(potensyaru src/potensyaru.cpp) 
  add_executable(30second_jikkenn src/30second_jikkenn.cpp)
  
@@ -202,6 +203,10 @@ target_link_libraries(cmd_vel
   ${PCL_LIBRARIES}
 )
 target_link_libraries(cmd_goal
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+target_link_libraries(cmd_goal_2d
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )

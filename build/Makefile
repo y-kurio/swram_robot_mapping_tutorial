@@ -181,6 +181,19 @@ depend:
 .PHONY : 30second_jikkenn/fast
 
 #=============================================================================
+# Target rules for targets named cmd_goal_2d
+
+# Build rule for target.
+cmd_goal_2d: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cmd_goal_2d
+.PHONY : cmd_goal_2d
+
+# fast build rule for target.
+cmd_goal_2d/fast:
+	$(MAKE) -f CMakeFiles/cmd_goal_2d.dir/build.make CMakeFiles/cmd_goal_2d.dir/build
+.PHONY : cmd_goal_2d/fast
+
+#=============================================================================
 # Target rules for targets named swram_robot_mapping_tutorial_node
 
 # Build rule for target.
@@ -1639,6 +1652,33 @@ src/cmd_goal.cpp.s:
 	$(MAKE) -f CMakeFiles/cmd_goal.dir/build.make CMakeFiles/cmd_goal.dir/src/cmd_goal.cpp.s
 .PHONY : src/cmd_goal.cpp.s
 
+src/cmd_goal_2d.o: src/cmd_goal_2d.cpp.o
+
+.PHONY : src/cmd_goal_2d.o
+
+# target to build an object file
+src/cmd_goal_2d.cpp.o:
+	$(MAKE) -f CMakeFiles/cmd_goal_2d.dir/build.make CMakeFiles/cmd_goal_2d.dir/src/cmd_goal_2d.cpp.o
+.PHONY : src/cmd_goal_2d.cpp.o
+
+src/cmd_goal_2d.i: src/cmd_goal_2d.cpp.i
+
+.PHONY : src/cmd_goal_2d.i
+
+# target to preprocess a source file
+src/cmd_goal_2d.cpp.i:
+	$(MAKE) -f CMakeFiles/cmd_goal_2d.dir/build.make CMakeFiles/cmd_goal_2d.dir/src/cmd_goal_2d.cpp.i
+.PHONY : src/cmd_goal_2d.cpp.i
+
+src/cmd_goal_2d.s: src/cmd_goal_2d.cpp.s
+
+.PHONY : src/cmd_goal_2d.s
+
+# target to generate assembly for a file
+src/cmd_goal_2d.cpp.s:
+	$(MAKE) -f CMakeFiles/cmd_goal_2d.dir/build.make CMakeFiles/cmd_goal_2d.dir/src/cmd_goal_2d.cpp.s
+.PHONY : src/cmd_goal_2d.cpp.s
+
 src/cmd_vel.o: src/cmd_vel.cpp.o
 
 .PHONY : src/cmd_vel.o
@@ -1786,6 +1826,7 @@ help:
 	@echo "... list_install_components"
 	@echo "... test"
 	@echo "... 30second_jikkenn"
+	@echo "... cmd_goal_2d"
 	@echo "... swram_robot_mapping_tutorial_node"
 	@echo "... cluster_odom"
 	@echo "... swram_robot_mapping_tutorial_generate_messages_py"
@@ -1903,6 +1944,9 @@ help:
 	@echo "... src/cmd_goal.o"
 	@echo "... src/cmd_goal.i"
 	@echo "... src/cmd_goal.s"
+	@echo "... src/cmd_goal_2d.o"
+	@echo "... src/cmd_goal_2d.i"
+	@echo "... src/cmd_goal_2d.s"
 	@echo "... src/cmd_vel.o"
 	@echo "... src/cmd_vel.i"
 	@echo "... src/cmd_vel.s"

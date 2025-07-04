@@ -142,16 +142,6 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
         int size = cluster_data.cluster_points[cluster_id].polygon.points.size();
         double G_kyori = sqrt(pow(cluster_data.cluster_points[cluster_id].polygon.points[size/2].x - pose_out_.pose.position.x , 2) + pow(cluster_data.cluster_points[cluster_id].polygon.points[size/2].y - pose_out_.pose.position.y , 2));
         double annzennhosyou = atan2(ROBOT_SIZE, G_kyori);
-        for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
-        {
-            kyori = sqrt(pow(cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x , 2) + pow(cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y , 2));
-            if (kyori < MIN_kyori.z && cluster_data.cluster_type[cluster_id] == 2.0)
-            {
-                MIN_kyori.x = cluster_data.cluster_points[cluster_id].polygon.points[i].x;
-                MIN_kyori.y = cluster_data.cluster_points[cluster_id].polygon.points[i].y;
-                MIN_kyori.z = kyori;
-            }
-        }
         if (cluster_data.cluster_type[cluster_id] == 1.0)
         {
             cluster_data.orientation[cluster_id].x = atan2(cluster_data.cluster_points[cluster_id].polygon.points[0].y, cluster_data.cluster_points[cluster_id].polygon.points[0].x);

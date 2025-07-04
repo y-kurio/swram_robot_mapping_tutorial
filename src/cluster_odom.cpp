@@ -196,6 +196,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     
     geometry_msgs::TransformStamped transformStamped;
     double kyori;
+    MIN_kyori.x = std::numeric_limits<double>::max();
+    MIN_kyori.y = std::numeric_limits<double>::max();
     MIN_kyori.z = std::numeric_limits<double>::max();
     
     try
@@ -210,35 +212,55 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     
     tf2::doTransform(pre_point_, pose_out_, transformStamped);
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////一番近い距離を探索
+    // for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
+    //     for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
+    //     {
+    //         kyori = sqrt(pow(cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x , 2) + pow(cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y , 2));
+    //         if (kyori < MIN_kyori.z && cluster_data.cluster_type[cluster_id] == 2.0)
+    //         {
+    //             MIN_kyori.x = cluster_data.cluster_points[cluster_id].polygon.points[i].x;
+    //             MIN_kyori.y = cluster_data.cluster_points[cluster_id].polygon.points[i].y;
+    //             MIN_kyori.z = kyori;
+    //         }
+    //     }
+    // }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////x,yそれぞれの方向に障害物があるのかを探索
     for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
         for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
         {
+            if ((pose_out_.pose.position.y - 0.5) < cluster_data.cluster_points[cluster_id].polygon.points[i].y && (pose_out_.pose.position.y + 0.5) > cluster_data.cluster_points[cluster_id].polygon.points[i].y && cluster_data.cluster_type[cluster_id] == 2.0)
+            {
+                double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x;
+                if (kyori_x < MIN_kyori.x)
+                {
+                    MIN_kyori.x = kyori_x;
+                }
+            }
+            
+            if ((pose_out_.pose.position.x - 0.5) < cluster_data.cluster_points[cluster_id].polygon.points[i].x && (pose_out_.pose.position.x + 0.5) > cluster_data.cluster_points[cluster_id].polygon.points[i].x && cluster_data.cluster_type[cluster_id] == 2.0)
+            {
+                double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y;
+                if (kyori_y < MIN_kyori.y)
+                {
+                    MIN_kyori.y = kyori_y;
+                }
+            }
+
             kyori = sqrt(pow(cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x , 2) + pow(cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y , 2));
             if (kyori < MIN_kyori.z && cluster_data.cluster_type[cluster_id] == 2.0)
             {
-                MIN_kyori.x = cluster_data.cluster_points[cluster_id].polygon.points[i].x;
-                MIN_kyori.y = cluster_data.cluster_points[cluster_id].polygon.points[i].y;
                 MIN_kyori.z = kyori;
             }
         }
-        if (cluster_data.cluster_type[cluster_id] == 1.0)
-        {
-            int size = cluster_data.cluster_points[cluster_id].polygon.points.size();
-            cluster_data.orientation[cluster_id].x = atan2(cluster_data.cluster_points[cluster_id].polygon.points[0].y, cluster_data.cluster_points[cluster_id].polygon.points[0].x);
-            cluster_data.orientation[cluster_id].y = atan2(cluster_data.cluster_points[cluster_id].polygon.points[size-1].y, cluster_data.cluster_points[cluster_id].polygon.points[size-1].x);
-            if (cluster_data.orientation[cluster_id].x < cluster_data.orientation[cluster_id].y)
-            {
-                cluster_data.orientation[cluster_id].x = atan2(cluster_data.cluster_points[cluster_id].polygon.points[size-1].y, cluster_data.cluster_points[cluster_id].polygon.points[size-1].x);
-                cluster_data.orientation[cluster_id].y = atan2(cluster_data.cluster_points[cluster_id].polygon.points[0].y, cluster_data.cluster_points[cluster_id].polygon.points[0].x);
-            }
-            
-        ROS_INFO("kakudo: %f, %f", cluster_data.orientation[cluster_id].x, cluster_data.orientation[cluster_id].y);
-        }
     }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (MIN_kyori.z < 100)
     {
-        ROS_INFO("spreadinghannkei-----%.2f",MIN_kyori.z);
+        // ROS_INFO("spreadinghannkei-----%.2f",MIN_kyori.z);
     spreading_pub.publish(MIN_kyori);
     // clusterling_pub.publish(cluster_data);
     }else 
@@ -246,6 +268,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
         MIN_kyori.z = 0.0;
         spreading_pub.publish(MIN_kyori);
     }
+    std::cout << "x: " << MIN_kyori.x << std::endl;
+    std::cout << "y: " << MIN_kyori.y << std::endl;
     
 }
 

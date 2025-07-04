@@ -10,12 +10,25 @@ void goalactionCallback(const std_msgs::Int8::ConstPtr& msg)
 void Group_radiusCallback(const geometry_msgs::Vector3::ConstPtr& msg)
 {
     group_radius = *msg;
-    MIN_kyori = group_radius.z;
-    if (group_radius.z == 0.0) 
+    MIN_kyori_x = std::abs(group_radius.x);
+    MIN_kyori_y = std::abs(group_radius.y);
+    MIN_kyori_z = group_radius.z;
+
+
+    if (group_radius.x > 4.0) 
     {
-        // ROS_INFO("kara");
-        MIN_kyori = 6.0;
+        ROS_INFO("kara_x");
+        MIN_kyori_x = 4.0;
     }
+    if (group_radius.y > 4.0) 
+    {
+        ROS_INFO("kara_y");
+        MIN_kyori_y = 4.0;
+    }
+    // MIN_kyori_x = 4.0;//std::abs(group_radius.x);
+    // MIN_kyori_y = 9.0;//std::abs(group_radius.y);
+    std::cout << "x: " << MIN_kyori_x << std::endl;
+    std::cout << "y: " << MIN_kyori_y << std::endl;
 }
 
 void clusterlingCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr& msg)
@@ -125,8 +138,15 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     // 0からRAND_MAXまでの整数を生成し、0.0〜1.0の範囲にスケール
     double random_value = static_cast<double>(rand()) / RAND_MAX;
     // ROS_INFO("Random value: %f", random_value);
-    double heikinnti = MIN_kyori / 2;
-    double bunnsann = MIN_kyori / 6;
+    double bunnsann = MIN_kyori_z / 6;
+    geometry_msgs::Quaternion q = pose_out.pose.orientation;  // 例: Odometryなどから取得
+
+    // クオータニオン → tf2のQuaternion型へ変換
+    tf2::Quaternion quat(q.x, q.y, q.z, q.w);
+
+    // クオータニオン → オイラー角 (roll, pitch, yaw)
+    double pose_out_roll, pose_out_pitch, pose_out_yaw;
+    tf2::Matrix3x3(quat).getRPY(pose_out_roll, pose_out_pitch, pose_out_yaw);
     
         // ROS_INFO("FRAME_ROBOT_BASE=%s",FRAME_ROBOT_BASE);
         // std::cout << "x: " << pose_out.pose.position.x << std::endl;
@@ -136,22 +156,41 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     double kyori =(sqrt((sub_pose_out.pose.position.x - pose_out.pose.position.x)*(sub_pose_out.pose.position.x - pose_out.pose.position.x) + (sub_pose_out.pose.position.y - pose_out.pose.position.y)*(sub_pose_out.pose.position.y - pose_out.pose.position.y)));
     if (!is_initialized) 
     {
-        idoutyou_ = sqrt(-2.0 * bunnsann * bunnsann * log(-(random_value - 1.0)));//レイリー分布によるロボットの移動長をランダムに決定
-        ggetRandomAngle();//目標ゴールへの角度を計算
-
-        //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー確率密度による存在分布の評価
+        idoutyou_ = sqrt(-2.0 * bunnsann * bunnsann * log(-(random_value - 1.0)));
+        ggetRandomAngle();
         x_ = idoutyou_*cos(random_angle);
         y_ = idoutyou_*sin(random_angle);
         move_pose_x_ = pose_out.pose.position.x + x_;
         move_pose_y_ = pose_out.pose.position.y + y_;
         move_pose_ = sqrt(x_*x_ + y_*y_);
-        pre_dis = sqrt((sub_pose_out.pose.position.x - 0.0)*(sub_pose_out.pose.position.x - 0.0) + (sub_pose_out.pose.position.y - 0.0)*(sub_pose_out.pose.position.y - 0.0));
-        newposdis = sqrt((move_pose_x_ - 0.0)*(move_pose_x_ - 0.0) + (move_pose_y_ - 0.0)*(move_pose_y_ - 0.0));
-        x_1_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((pre_dis - heikinnti)*(pre_dis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
-        x_2_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((newposdis - heikinnti)*(newposdis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
-        SSS_ = x_2_ / x_1_;
-        //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+        pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.y), 2));
+        newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
 
+        Vxx = pow(std::max(MIN_kyori_x, 0.2) / 3 , 2 );
+        Vyy = pow(std::max(MIN_kyori_y, 0.2) / 3 , 2 );
+
+        Vxy =0;
+
+        // 2x2行列の定義
+        A << Vxx, Vxy,
+            Vxy, Vyy;
+
+        double det_sigma = A.determinant();
+        // ベクトルの定義
+        pre_x << sub_pose_out.pose.position.x - pose_out.pose.position.x,
+                 sub_pose_out.pose.position.y - pose_out.pose.position.y;
+
+        // ベクトルの定義
+        new_x << move_pose_x_ - pose_out.pose.position.x,
+                 move_pose_y_ - pose_out.pose.position.y;
+
+        double exponent = -0.5 * (pre_x.transpose() * A.inverse() * pre_x)(0,0);
+        x_1_ = (1.0 / (2.0 * M_PI * sqrt(det_sigma))) * std::exp(exponent);
+
+        double exponent2 = -0.5 * (new_x.transpose() * A.inverse() * new_x)(0,0);
+        x_2_ = (1.0 / (2.0 * M_PI * sqrt(det_sigma))) * std::exp(exponent2);
+
+        SSS_ = x_2_ / x_1_;
         double roll = 0.0;    // X軸周りの回転
         double pitch = 0.0;   // Y軸周りの回転
         double yaw = random_angle;    // Z軸周りの回転（90度＝1.57ラジアン）
@@ -193,34 +232,33 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         move_pose_x_ = pose_out.pose.position.x + x_;
         move_pose_y_ = pose_out.pose.position.y + y_;
         move_pose_ = sqrt(x_*x_ + y_*y_);
-        pre_dis = sqrt((sub_pose_out.pose.position.x - pose_out.pose.position.x)*(sub_pose_out.pose.position.x - pose_out.pose.position.x) + (sub_pose_out.pose.position.y - pose_out.pose.position.y)*(sub_pose_out.pose.position.y - pose_out.pose.position.y));
-        newposdis = sqrt((move_pose_x_ - pose_out.pose.position.x)*(move_pose_x_ - pose_out.pose.position.x) + (move_pose_y_ - pose_out.pose.position.y)*(move_pose_y_ - pose_out.pose.position.y));
+        pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.y), 2));
+        newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
 
+
+        Vxx = pow(std::max(MIN_kyori_x, 0.2) / 3 , 2 );
+        Vyy = pow(std::max(MIN_kyori_y, 0.2) / 3 , 2 );
+
+        Vxy = 0;//((Vxx - Vyy)*tan(2*pose_out_yaw * 180.0 / M_PI)) / 2;
         // 2x2行列の定義
-        Eigen::Matrix2d A;
         A << Vxx, Vxy,
             Vxy, Vyy;
 
         double det_sigma = A.determinant();
         // ベクトルの定義
-        Eigen::Vector2d x;
-        pre_x << 5,
-                 6;
+        pre_x << sub_pose_out.pose.position.x - pose_out.pose.position.x,
+                 sub_pose_out.pose.position.y - pose_out.pose.position.y;
 
-        // 行列×ベクトル
-        Eigen::Vector2d y = A * x;
+        // ベクトルの定義
+        new_x << move_pose_x_ - pose_out.pose.position.x,
+                 move_pose_y_ - pose_out.pose.position.y;
 
-        std::cout << "A:\n" << A << std::endl;
-        std::cout << "x:\n" << x << std::endl;
-        std::cout << "y = A * x:\n" << y << std::endl;
+        double exponent = -0.5 * (pre_x.transpose() * A.inverse() * pre_x)(0,0);
+        x_1_ = (1.0 / (2.0 * M_PI * sqrt(det_sigma))) * std::exp(exponent);
 
-        // 逆行列の計算
-        Eigen::Matrix2d A_inv = A.inverse();
-        std::cout << "A inverse:\n" << A_inv << std::endl;
+        double exponent2 = -0.5 * (new_x.transpose() * A.inverse() * new_x)(0,0);
+        x_2_ = (1.0 / (2.0 * M_PI * sqrt(det_sigma))) * std::exp(exponent2);
 
-
-        x_1_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((pre_dis - heikinnti)*(pre_dis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
-        x_2_ = (1.0 / sqrt(2.0 * 3.141592 * (bunnsann)*(bunnsann))) * exp(-((newposdis - heikinnti)*(newposdis - heikinnti)) / (2.0 * (bunnsann)*(bunnsann)));
         SSS_ = x_2_ / x_1_;
         double roll = 0.0;    // X軸周りの回転
         double pitch = 0.0;   // Y軸周りの回転
@@ -253,7 +291,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         }
         
     }
-    else if ( kyori > MIN_kyori && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
+    else if ( kyori > 5 && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
     {
         // ロボットの位置を更新
         ggetRandomAngle();
@@ -262,7 +300,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         sub_goal.pose.position.x = 1.5*cos(random_angle) + pose_out.pose.position.x;
         sub_goal.pose.position.y = 1.5*sin(random_angle) + pose_out.pose.position.y;
         sub_goal.pose.position.z = 0.0;
-        sub_goal.pose.orientation.x = -00000.365853737606;
+        sub_goal.pose.orientation.x = -0.0000365853737606;
         sub_goal.pose.orientation.y = 0.00386090210218;
         sub_goal.pose.orientation.z = 0.00758096193567;
         sub_goal.pose.orientation.w = 0.999963809901;
@@ -270,39 +308,43 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         ROS_INFO("restart!!");
         goalpublisher();
     }
-    visualization_msgs::Marker marker;
-    marker.header.frame_id = "map";  // 基準座標系
-    marker.header.stamp = ros::Time::now();
-    marker.type = visualization_msgs::Marker::LINE_STRIP;  // 複数の線をつなげて円を作る
 
-    // 円の中心座標
-    double center_x = pose_out.pose.position.x;
-    double center_y = pose_out.pose.position.y;
-    double radius = MIN_kyori;
-    int points_count = 36;  // 円を構成する点の数（大きいほど滑らか）
-    
-    // 点を円周上に配置
-    for (int i = 0; i <= points_count; i++) {
-        double theta = 2.0 * M_PI * i / points_count;
+    Eigen::SelfAdjointEigenSolver<Eigen::Matrix2d> eig_solver(A);
+    Eigen::Vector2d eig_values = eig_solver.eigenvalues();
+    Eigen::Matrix2d eig_vectors = eig_solver.eigenvectors();
+
+    visualization_msgs::Marker ellipse;
+    ellipse.header.frame_id = "map";
+    ellipse.header.stamp = ros::Time::now();
+    ellipse.ns = "covariance_ellipse";
+    ellipse.id = 0;
+    ellipse.type = visualization_msgs::Marker::LINE_STRIP;
+    ellipse.action = visualization_msgs::Marker::ADD;
+    ellipse.pose.orientation.w = 1.0;
+    ellipse.scale.x = 0.03;
+
+    ellipse.color.r = 1.0;
+    ellipse.color.g = 0.0;
+    ellipse.color.b = 0.0;
+    ellipse.color.a = 1.0;
+
+    const int resolution = 100;
+    for (int i = 0; i <= resolution; ++i)
+    {
+        double theta = 2.0 * M_PI * i / resolution;
+        Eigen::Vector2d unit_circle(std::cos(theta), std::sin(theta));
+
+        // ✅ 修正された積の順序と型
+        Eigen::Vector2d ellipse_point = eig_vectors * eig_values.cwiseSqrt().asDiagonal() * 3.0 * unit_circle;
+
         geometry_msgs::Point p;
-        p.x = center_x + radius * cos(theta);
-        p.y = center_y + radius * sin(theta);
-        p.z = 0.1;
-        marker.points.push_back(p);
+        p.x = ellipse_point.x() + pose_out.pose.position.x;
+        p.y = ellipse_point.y() + pose_out.pose.position.y;
+        p.z = 0.0;
+        ellipse.points.push_back(p);
     }
-
-    // 線の幅
-    marker.scale.x = 0.3;  // 線の太さ
-
-    // 色
-    marker.color.r = 1.0;
-    marker.color.g = 0.0;
-    marker.color.b = 0.0;
-    marker.color.a = 1.0;  // 透明度（1.0で不透明）
-
-    marker.lifetime = ros::Duration();  // 永続表示
-
-    marker_pub.publish(marker);
+    // publish
+    marker_pub.publish(ellipse);
 
     visualization_msgs::Marker marker_sub_goal;
     marker_sub_goal.header.frame_id = "map";  // 基準座標系
