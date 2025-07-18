@@ -19,7 +19,7 @@
         </node>
     </group>
         
-    <!-- <group ns="$(arg multi_robot)_3">
+    <group ns="$(arg multi_robot)_3">
         <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">
@@ -46,7 +46,7 @@
         </node>
     </group>
         
-    <group ns="$(arg multi_robot)_6">
+    <!-- <group ns="$(arg multi_robot)_6">
         <node pkg="swram_robot_mapping_tutorial" type="keisoku" name="keisoku" output="screen">
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="sub_cluster_odom" name="sub_cluster_odom" output="screen">

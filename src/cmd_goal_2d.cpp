@@ -7,28 +7,31 @@ void goalactionCallback(const std_msgs::Int8::ConstPtr& msg)
     goal_status = *msg;
 }
 
-void Group_radiusCallback(const geometry_msgs::Vector3::ConstPtr& msg)
+void Group_radiusCallback(const geometry_msgs::Pose::ConstPtr& msg)
 {
     group_radius = *msg;
-    MIN_kyori_x = std::abs(group_radius.x);
-    MIN_kyori_y = std::abs(group_radius.y);
-    MIN_kyori_z = group_radius.z;
+    MIN_kyori_x = std::abs(group_radius.position.x);
+    MIN_kyori_y = std::abs(group_radius.position.y);
+    MIN_kyori_z = group_radius.position.z;
 
 
-    if (group_radius.x > 4.0) 
+    if (group_radius.position.x == 0.0) 
     {
-        ROS_INFO("kara_x");
         MIN_kyori_x = 4.0;
     }
-    if (group_radius.y > 4.0) 
+    if (group_radius.position.y == 0.0) 
     {
-        ROS_INFO("kara_y");
         MIN_kyori_y = 4.0;
+    }
+    if (group_radius.position.z == 0.0) 
+    {
+        MIN_kyori_z = 6.0;
     }
     // MIN_kyori_x = 4.0;//std::abs(group_radius.x);
     // MIN_kyori_y = 9.0;//std::abs(group_radius.y);
     std::cout << "x: " << MIN_kyori_x << std::endl;
     std::cout << "y: " << MIN_kyori_y << std::endl;
+    std::cout << "z: " << MIN_kyori_z << std::endl;
 }
 
 void clusterlingCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr& msg)
@@ -105,7 +108,7 @@ void goalpublisher()//目標ゴール位置を送信
     ROS_INFO("publish OK!!!" );
     std::cout << "x: " << sub_goal.pose.position.x << std::endl;
     std::cout << "y: " << sub_goal.pose.position.y << std::endl;
-    std::cout << "saidaihanni: " << MIN_kyori << std::endl;
+    std::cout << "saidaihanni: " << MIN_kyori_z << std::endl;
 }
 
 void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボットの自己位置取得
@@ -147,6 +150,16 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     // クオータニオン → オイラー角 (roll, pitch, yaw)
     double pose_out_roll, pose_out_pitch, pose_out_yaw;
     tf2::Matrix3x3(quat).getRPY(pose_out_roll, pose_out_pitch, pose_out_yaw);
+
+        Vxx = pow(std::max(MIN_kyori_x, 0.2) / 3 , 2 );
+        Vyy = pow(std::max(MIN_kyori_y, 0.2) / 3 , 2 );
+
+        Vxy = ((Vxx - Vyy) / 2) * tan( group_radius.orientation.w);
+
+        // 2x2行列の定義
+        A << Vxx, Vxy,
+            Vxy, Vyy;
+
     
         // ROS_INFO("FRAME_ROBOT_BASE=%s",FRAME_ROBOT_BASE);
         // std::cout << "x: " << pose_out.pose.position.x << std::endl;
@@ -165,16 +178,6 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         move_pose_ = sqrt(x_*x_ + y_*y_);
         pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.y), 2));
         newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
-
-        Vxx = pow(std::max(MIN_kyori_x, 0.2) / 3 , 2 );
-        Vyy = pow(std::max(MIN_kyori_y, 0.2) / 3 , 2 );
-
-        Vxy =0;
-
-        // 2x2行列の定義
-        A << Vxx, Vxy,
-            Vxy, Vyy;
-
         double det_sigma = A.determinant();
         // ベクトルの定義
         pre_x << sub_pose_out.pose.position.x - pose_out.pose.position.x,
@@ -235,14 +238,6 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.y), 2));
         newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
 
-
-        Vxx = pow(std::max(MIN_kyori_x, 0.2) / 3 , 2 );
-        Vyy = pow(std::max(MIN_kyori_y, 0.2) / 3 , 2 );
-
-        Vxy = 0;//((Vxx - Vyy)*tan(2*pose_out_yaw * 180.0 / M_PI)) / 2;
-        // 2x2行列の定義
-        A << Vxx, Vxy,
-            Vxy, Vyy;
 
         double det_sigma = A.determinant();
         // ベクトルの定義

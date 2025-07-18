@@ -45,7 +45,7 @@ ros::Publisher marker_pub,marker_sub_goal_pub;
 double MIN_kyori_x, MIN_kyori_y, MIN_kyori_z, MIN_kyori;
 int number, angle_degrees;
 double random_angle;
-geometry_msgs::Vector3 group_radius;
+geometry_msgs::Pose group_radius;
 geometry_msgs::PoseStamped sub_pose_out;
 geometry_msgs::TransformStamped sub_transformStamped;
         Eigen::Matrix2d A;

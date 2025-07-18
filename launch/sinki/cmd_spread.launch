@@ -1,7 +1,7 @@
 <launch>
 <arg name="multi_robot"                     default="robot_1"/>
     <group ns="$(arg multi_robot)_1">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>
@@ -19,7 +19,7 @@
     </group>
         
     <group ns="$(arg multi_robot)_2">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>
@@ -36,8 +36,8 @@
         </node>
     </group>
         
-    <!-- <group ns="$(arg multi_robot)_3">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+    <group ns="$(arg multi_robot)_3">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>
@@ -55,7 +55,7 @@
     </group>
         
     <group ns="$(arg multi_robot)_4">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>
@@ -73,7 +73,7 @@
     </group>
         
     <group ns="$(arg multi_robot)_5">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>
@@ -90,8 +90,8 @@
         </node>
     </group>
         
-    <group ns="$(arg multi_robot)_6">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+    <!-- <group ns="$(arg multi_robot)_6">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>
@@ -109,7 +109,7 @@
     </group>
         
     <group ns="$(arg multi_robot)_7">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>
@@ -127,7 +127,7 @@
     </group>
         
     <group ns="$(arg multi_robot)_8">
-        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal" name="cmd_goal" output="screen">
+        <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
             <param name="BUNNSANN"      value="0.33"/>

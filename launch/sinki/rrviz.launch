@@ -27,7 +27,7 @@
     </include>
   </group>
 
-  <!-- <group ns="$(arg multi_robot)_3">
+  <group ns="$(arg multi_robot)_3">
 
     <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
       <arg name="multi_robot"                   value="$(arg multi_robot)_3"/>
@@ -51,7 +51,7 @@
     </include>
   </group>
 
-  <group ns="$(arg multi_robot)_6">
+  <!-- <group ns="$(arg multi_robot)_6">
 
     <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
       <arg name="multi_robot"                   value="$(arg multi_robot)_6"/>

@@ -98,7 +98,7 @@ nav_msgs::Odometry odomdata_;
 geometry_msgs::PoseStamped pose_out_;        
 std::vector<geometry_msgs::PointStamped> pose_out;
 ros::Publisher spreading_pub, clusterling_pub;
-geometry_msgs::Vector3 MIN_kyori;
+geometry_msgs::Pose MIN_kyori;
 swram_robot_mapping_tutorial::cluster_data cluster_data;
 
 void clusterCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr& msg) {
@@ -196,9 +196,9 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     
     geometry_msgs::TransformStamped transformStamped;
     double kyori;
-    MIN_kyori.x = std::numeric_limits<double>::max();
-    MIN_kyori.y = std::numeric_limits<double>::max();
-    MIN_kyori.z = std::numeric_limits<double>::max();
+    MIN_kyori.position.x = std::numeric_limits<double>::max();
+    MIN_kyori.position.y = std::numeric_limits<double>::max();
+    MIN_kyori.position.z = std::numeric_limits<double>::max();
     
     try
     {
@@ -233,43 +233,59 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
         {
             if ((pose_out_.pose.position.y - 0.5) < cluster_data.cluster_points[cluster_id].polygon.points[i].y && (pose_out_.pose.position.y + 0.5) > cluster_data.cluster_points[cluster_id].polygon.points[i].y && cluster_data.cluster_type[cluster_id] == 2.0)
             {
-                double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x;
-                if (kyori_x < MIN_kyori.x)
+                double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
+                if (kyori_x < MIN_kyori.position.x)
                 {
-                    MIN_kyori.x = kyori_x;
+                    MIN_kyori.position.x = kyori_x;
                 }
             }
             
             if ((pose_out_.pose.position.x - 0.5) < cluster_data.cluster_points[cluster_id].polygon.points[i].x && (pose_out_.pose.position.x + 0.5) > cluster_data.cluster_points[cluster_id].polygon.points[i].x && cluster_data.cluster_type[cluster_id] == 2.0)
             {
-                double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y;
-                if (kyori_y < MIN_kyori.y)
+                double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
+                if (kyori_y < MIN_kyori.position.y)
                 {
-                    MIN_kyori.y = kyori_y;
+                    MIN_kyori.position.y = kyori_y;
                 }
             }
 
             kyori = sqrt(pow(cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x , 2) + pow(cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y , 2));
-            if (kyori < MIN_kyori.z && cluster_data.cluster_type[cluster_id] == 2.0)
+            if (kyori < MIN_kyori.position.z && cluster_data.cluster_type[cluster_id] == 2.0)
             {
-                MIN_kyori.z = kyori;
+                MIN_kyori.position.z = kyori;
+                double dx = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
+                double dy = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
+                MIN_kyori.orientation.w = atan2(dy, dx);
+
             }
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if (MIN_kyori.z < 100)
+    if (MIN_kyori.position.x < 100)
+    {
+    }else 
+    {
+        MIN_kyori.position.x = 0.0;
+    }
+    if (MIN_kyori.position.y < 100)
+    {
+    }else 
+    {
+        MIN_kyori.position.y = 0.0;
+    }
+    if (MIN_kyori.position.z < 100)
     {
         // ROS_INFO("spreadinghannkei-----%.2f",MIN_kyori.z);
     spreading_pub.publish(MIN_kyori);
     // clusterling_pub.publish(cluster_data);
     }else 
     {
-        MIN_kyori.z = 0.0;
+        MIN_kyori.position.z = 0.0;
         spreading_pub.publish(MIN_kyori);
     }
-    std::cout << "x: " << MIN_kyori.x << std::endl;
-    std::cout << "y: " << MIN_kyori.y << std::endl;
+    std::cout << "x: " << MIN_kyori.position.x << std::endl;
+    std::cout << "y: " << MIN_kyori.position.y << std::endl;
     
 }
 
@@ -282,7 +298,7 @@ static tf2_ros::TransformListener tfListener(tf_buffer_);
     // クラスタリング結果を購読
     ros::Subscriber cluster_sub = nh.subscribe("clustered_points", 10, clusterCallback);
     ros::Subscriber encoder_sub = nh.subscribe("odom", 10, encoderCallback);
-    spreading_pub = nh.advertise<geometry_msgs::Vector3>("/Group_radius", 10);
+    spreading_pub = nh.advertise<geometry_msgs::Pose>("/Group_radius", 10);
     // clusterling_pub = nh.advertise<swram_robot_mapping_tutorial::cluster_data>("clusterdata", 10);
 
     ros::spin();
