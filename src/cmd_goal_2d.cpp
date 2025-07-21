@@ -109,6 +109,33 @@ void goalpublisher()//目標ゴール位置を送信
     std::cout << "x: " << sub_goal.pose.position.x << std::endl;
     std::cout << "y: " << sub_goal.pose.position.y << std::endl;
     std::cout << "saidaihanni: " << MIN_kyori_z << std::endl;
+    visualization_msgs::Marker marker_sub_goal;
+    marker_sub_goal.header.frame_id = "map";  // 基準座標系
+    marker_sub_goal.header.stamp = ros::Time::now();
+
+    // マーカーの形状を円柱（CYLINDER）にする
+    marker_sub_goal.type = visualization_msgs::Marker::CYLINDER;
+
+    // 位置（地面に円を置くためにz座標を少し上げる）
+    marker_sub_goal.pose.position.x = sub_goal.pose.position.x;
+    marker_sub_goal.pose.position.y = sub_goal.pose.position.y;
+    marker_sub_goal.pose.position.z = 0.01;  // わずかに浮かせる
+
+    // サイズ（円の直径と厚み）
+    marker_sub_goal.scale.x = 0.1;  // 直径
+    marker_sub_goal.scale.y = 0.1;  // 直径
+    marker_sub_goal.scale.z = 0.01; // 厚み（これを小さくすることで「円」になる）
+
+    // 色（緑色の円）
+    marker_sub_goal.color.r = 0.0;
+    marker_sub_goal.color.g = 1.0;
+    marker_sub_goal.color.b = 0.0;
+    marker_sub_goal.color.a = 1.0;  // 透明度（1.0で不透明）
+
+    // 永続表示
+    marker_sub_goal.lifetime = ros::Duration();
+
+    marker_sub_goal_pub.publish(marker_sub_goal);
 }
 
 void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボットの自己位置取得
@@ -153,8 +180,44 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
 
         Vxx = pow(std::max(MIN_kyori_x, 0.2) / 3 , 2 );
         Vyy = pow(std::max(MIN_kyori_y, 0.2) / 3 , 2 );
+        if (group_radius.orientation.w > 0)
+        {
+            if (group_radius.orientation.w < (M_PI / 2))
+                {
+                    double theta = group_radius.orientation.w - (M_PI / 2);
+                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
+                }
+            else if (group_radius.orientation.w > (M_PI / 2))
+                {
+                    double theta = group_radius.orientation.w - (M_PI / 2);
+                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
+                }
+        }
+        else if (group_radius.orientation.w < 0)
+        {
+            if (group_radius.orientation.w > -(M_PI / 2))
+                {
+                    double theta = group_radius.orientation.w + (M_PI / 2);
+                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
+                }
+            else if (group_radius.orientation.w < -(M_PI / 2))
+                {
+                    double theta = (M_PI / 2) + group_radius.orientation.w ;
+                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
+                }
+        }
+        
+        if (Vxx * Vyy - Vxy*Vxy >0)
+        {
 
-        Vxy = ((Vxx - Vyy) / 2) * tan( group_radius.orientation.w);
+        }else
+        {
+            Vxx = group_radius.position.z / 3;
+            Vyy = group_radius.position.z / 3;
+            Vxy = 0;
+        }
+            
+        
 
         // 2x2行列の定義
         A << Vxx, Vxy,
@@ -341,33 +404,6 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     // publish
     marker_pub.publish(ellipse);
 
-    visualization_msgs::Marker marker_sub_goal;
-    marker_sub_goal.header.frame_id = "map";  // 基準座標系
-    marker_sub_goal.header.stamp = ros::Time::now();
-
-    // マーカーの形状を円柱（CYLINDER）にする
-    marker_sub_goal.type = visualization_msgs::Marker::CYLINDER;
-
-    // 位置（地面に円を置くためにz座標を少し上げる）
-    marker_sub_goal.pose.position.x = sub_goal.pose.position.x;
-    marker_sub_goal.pose.position.y = sub_goal.pose.position.y;
-    marker_sub_goal.pose.position.z = 0.01;  // わずかに浮かせる
-
-    // サイズ（円の直径と厚み）
-    marker_sub_goal.scale.x = 0.1;  // 直径
-    marker_sub_goal.scale.y = 0.1;  // 直径
-    marker_sub_goal.scale.z = 0.01; // 厚み（これを小さくすることで「円」になる）
-
-    // 色（緑色の円）
-    marker_sub_goal.color.r = 0.0;
-    marker_sub_goal.color.g = 1.0;
-    marker_sub_goal.color.b = 0.0;
-    marker_sub_goal.color.a = 1.0;  // 透明度（1.0で不透明）
-
-    // 永続表示
-    marker_sub_goal.lifetime = ros::Duration();
-
-    marker_sub_goal_pub.publish(marker_sub_goal);
 }
 
 int main(int argc, char** argv)

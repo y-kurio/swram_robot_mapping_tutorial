@@ -14,7 +14,7 @@ void Group_radiusCallback(const geometry_msgs::Pose::ConstPtr& msg)
     if (group_radius.position.z == 0.0) 
     {
         // ROS_INFO("kara");
-        MIN_kyori = 6.0;
+        MIN_kyori = 4.0;
     }
 }
 
