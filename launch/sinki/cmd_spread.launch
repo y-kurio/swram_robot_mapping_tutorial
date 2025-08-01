@@ -4,7 +4,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -22,7 +22,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -40,7 +40,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -58,7 +58,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -76,7 +76,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -94,7 +94,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -112,7 +112,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -130,7 +130,7 @@
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_2d" name="cmd_goal_2d" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>

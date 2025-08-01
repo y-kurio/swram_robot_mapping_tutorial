@@ -232,7 +232,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     double kyori =(sqrt((sub_pose_out.pose.position.x - pose_out.pose.position.x)*(sub_pose_out.pose.position.x - pose_out.pose.position.x) + (sub_pose_out.pose.position.y - pose_out.pose.position.y)*(sub_pose_out.pose.position.y - pose_out.pose.position.y)));
     if (!is_initialized) 
     {
-        idoutyou_ = sqrt(-2.0 * bunnsann * bunnsann * log(-(random_value - 1.0)));
+        idoutyou_ = sqrt(-2.0 * bunnsann * bunnsann * log((-random_value + 1.0)));
         ggetRandomAngle();
         x_ = idoutyou_*cos(random_angle);
         y_ = idoutyou_*sin(random_angle);
@@ -271,7 +271,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
 
                 
         //  SSSの条件分岐
-        if( SSS_ > random_value )//ランダムな値と比較したものを比較
+        if( SSS_ > random_value && newposdis > 1.0 )//ランダムな値と比較したものを比較
         {
             // ロボットの位置を更新
             sub_goal.header.frame_id = FRAME_ROBOT_BASE;
@@ -291,7 +291,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     }
     else if (goal_status.data == 0)
     {
-        idoutyou_ = sqrt(-2.0 * bunnsann * bunnsann * log(-(random_value - 1.0)));
+        idoutyou_ = sqrt(-2.0 * bunnsann * bunnsann * log((-random_value + 1.0)));
         ggetRandomAngle();
         x_ = idoutyou_*cos(random_angle);
         y_ = idoutyou_*sin(random_angle);
@@ -331,7 +331,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         quaternion.w = q.w();
 
 
-        if( SSS_ > random_value )//  SSSの条件分岐
+        if( SSS_ > random_value && newposdis > 1.0  )//  SSSの条件分岐
         {
             // ロボットの位置を更新
             sub_goal.header.frame_id = FRAME_ROBOT_BASE;
