@@ -134,43 +134,6 @@ clean: CMakeFiles/cmd_goal_2d.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/swram_robot_mapping_tutorial_node.dir
-
-# All Build rule for target.
-CMakeFiles/swram_robot_mapping_tutorial_node.dir/all:
-	$(MAKE) -f CMakeFiles/swram_robot_mapping_tutorial_node.dir/build.make CMakeFiles/swram_robot_mapping_tutorial_node.dir/depend
-	$(MAKE) -f CMakeFiles/swram_robot_mapping_tutorial_node.dir/build.make CMakeFiles/swram_robot_mapping_tutorial_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/CMakeFiles --progress-num=35,36 "Built target swram_robot_mapping_tutorial_node"
-.PHONY : CMakeFiles/swram_robot_mapping_tutorial_node.dir/all
-
-# Include target in all.
-all: CMakeFiles/swram_robot_mapping_tutorial_node.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/swram_robot_mapping_tutorial_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/swram_robot_mapping_tutorial_node.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ubuntu/catkin_ws/src/swram_robot_mapping_tutorial/build/CMakeFiles 0
-.PHONY : CMakeFiles/swram_robot_mapping_tutorial_node.dir/rule
-
-# Convenience name for target.
-swram_robot_mapping_tutorial_node: CMakeFiles/swram_robot_mapping_tutorial_node.dir/rule
-
-.PHONY : swram_robot_mapping_tutorial_node
-
-# clean rule for target.
-CMakeFiles/swram_robot_mapping_tutorial_node.dir/clean:
-	$(MAKE) -f CMakeFiles/swram_robot_mapping_tutorial_node.dir/build.make CMakeFiles/swram_robot_mapping_tutorial_node.dir/clean
-.PHONY : CMakeFiles/swram_robot_mapping_tutorial_node.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/swram_robot_mapping_tutorial_node.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/cluster_odom.dir
 
 # All Build rule for target.

@@ -17,6 +17,9 @@
       <arg name="multi_robot"                   value="$(arg multi_robot)_1"/>
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
     </include>
+    <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)_1"/>
+  </include>
   </group>
 
   <group ns="$(arg multi_robot)_2">
@@ -25,6 +28,9 @@
       <arg name="multi_robot"                   value="$(arg multi_robot)_2"/>
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
     </include>
+    <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)_2"/>
+  </include>
   </group>
 
   <group ns="$(arg multi_robot)_3">
@@ -32,6 +38,9 @@
     <include file="$(find swram_robot_mapping_tutorial)/launch/sinki/newrviz.launch">
       <arg name="multi_robot"                   value="$(arg multi_robot)_3"/>
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
+    </include>
+    <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)_3"/>
     </include>
   </group>
 
@@ -41,6 +50,9 @@
       <arg name="multi_robot"                   value="$(arg multi_robot)_4"/>
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
     </include>
+    <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)_4"/>
+  </include>
   </group>
 
   <group ns="$(arg multi_robot)_5">
@@ -49,6 +61,9 @@
       <arg name="multi_robot"                   value="$(arg multi_robot)_5"/>
       <arg name="use_rviz"                      value="$(arg use_rviz)"/>
     </include>
+    <include file="$(find swram_robot_mapping_tutorial)/launch/mapping.launch">
+      <arg name="tf_prefix"       value="$(arg multi_robot)_5"/>
+  </include>
   </group>
 
   <!-- <group ns="$(arg multi_robot)_6">

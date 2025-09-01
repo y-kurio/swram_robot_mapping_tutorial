@@ -267,7 +267,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         geometry_msgs::Twist cmd;
         if (grad_magnitude > 0.1)
         {
-            cmd_vel.linear.x = std::min(0.2, grad_magnitude);  // 前進速度（最大0.5）
+            cmd_vel.linear.x = std::min(0.26, grad_magnitude);  // 前進速度（最大0.5）
             cmd_vel.linear.y = 0.0;  // 差動二輪は横移動不可
             cmd_vel.angular.z = std::max(-1.0, std::min(1.0, yaw_error));  // 回転速度（±1制限）
         } else

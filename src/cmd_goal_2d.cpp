@@ -29,9 +29,9 @@ void Group_radiusCallback(const geometry_msgs::Pose::ConstPtr& msg)
     }
     // MIN_kyori_x = 4.0;//std::abs(group_radius.x);
     // MIN_kyori_y = 9.0;//std::abs(group_radius.y);
-    std::cout << "x: " << MIN_kyori_x << std::endl;
-    std::cout << "y: " << MIN_kyori_y << std::endl;
-    std::cout << "z: " << MIN_kyori_z << std::endl;
+    // std::cout << "x: " << MIN_kyori_x << std::endl;
+    // std::cout << "y: " << MIN_kyori_y << std::endl;
+    // std::cout << "z: " << MIN_kyori_z << std::endl;
 }
 
 void clusterlingCallback(const swram_robot_mapping_tutorial::cluster_data::ConstPtr& msg)
@@ -108,7 +108,7 @@ void goalpublisher()//目標ゴール位置を送信
     ROS_INFO("publish OK!!!" );
     std::cout << "x: " << sub_goal.pose.position.x << std::endl;
     std::cout << "y: " << sub_goal.pose.position.y << std::endl;
-    std::cout << "saidaihanni: " << MIN_kyori_z << std::endl;
+    std::cout << "robotID: " << sub_pose_out.header.frame_id << std::endl;
     visualization_msgs::Marker marker_sub_goal;
     marker_sub_goal.header.frame_id = "map";  // 基準座標系
     marker_sub_goal.header.stamp = ros::Time::now();

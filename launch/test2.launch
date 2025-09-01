@@ -1,11 +1,219 @@
 <launch>
 <arg name="multi_robot"                     default="robot_1"/>
-    <group ns="$(arg multi_robot)">
-        <node pkg="swram_robot_mapping_tutorial" type="swram_robot_mapping_tutorial_node" name="swram_robot_mapping_tutorial_node" output="screen">
+    <group ns="$(arg multi_robot)_1">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="0.33"/>
+            <param name="BUNNSANN"      value="2.0"/>
         </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
     </group>
+        
+    <group ns="$(arg multi_robot)_2">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="2.0"/>
+        </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_3">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="2.0"/>
+        </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_4">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="2.0"/>
+        </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_5">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="2.0"/>
+        </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
+    </group>
+        
+    <!-- <group ns="$(arg multi_robot)_6">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="2.0"/>
+        </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_7">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="2.0"/>
+        </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
+    </group>
+        
+    <group ns="$(arg multi_robot)_8">
+        <node pkg="swram_robot_mapping_tutorial" type="test2" name="test2" output="screen">
+            <param name="FRAME/ROBOT_BASE"      value="map"/>
+            <param name="HEIKINTI"      value="1.5"/>
+            <param name="BUNNSANN"      value="2.0"/>
+        </node>
+        <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_burger.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+      <rosparam file="$(find swram_robot_mapping_tutorial)/param/dwa_local_planner_params_burger.yaml" command="load" />
+      <param name="global_costmap/global_frame" value="map" />
+      <param name="global_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="local_costmap/laser_scan_sensor/sensor_frame" value="$(arg tf_prefix)/base_scan" />
+      <param name="local_costmap/laser_scan_sensor/topic" value="$(arg tf_prefix)/scan" />
+      <param name="local_costmap/global_frame" value="$(arg tf_prefix)/odom" />
+      <param name="local_costmap/robot_base_frame" value="$(arg tf_prefix)/base_link" />
+      <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+      <remap from="cmd_vel"                             to="cmd_vel"/>
+      <remap from="odom"                                to="odom"/>
+      <remap from="move_base_simple/goal"               to="/$(arg tf_prefix)/move_base_simple/goal"/>
+    </node>
+    </group> -->
         
 </launch>
