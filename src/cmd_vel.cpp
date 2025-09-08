@@ -265,20 +265,14 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         double grad_magnitude = std::sqrt(fx * fx + fy * fy);
 
         geometry_msgs::Twist cmd;
-        if (grad_magnitude > 0.1)
-        {
-            cmd_vel.linear.x = std::min(0.26, grad_magnitude);  // 前進速度（最大0.5）
-            cmd_vel.linear.y = 0.0;  // 差動二輪は横移動不可
-            cmd_vel.angular.z = std::max(-1.0, std::min(1.0, yaw_error));  // 回転速度（±1制限）
-        } else
-        {
-            cmd_vel.linear.x = 0.1;
-            cmd_vel.linear.y = 0.0;
-            cmd_vel.linear.z = 0.0;
-            cmd_vel.angular.x = 0.0;
-            cmd_vel.angular.y = 0.0;
-            ggetRandomAngle();
-            cmd_vel.angular.z = random_angle;
+        // --- バック条件 ---
+        if (grad_magnitude > 0.1 && std::fabs(yaw_error) > M_PI/2) {
+            // 勾配方向が前方 ±90° 以外 → 前進は危険
+            cmd_vel.linear.x = -0.1;  // バック
+            cmd_vel.angular.z = 0.5 * ((yaw_error > 0) ? 1 : -1);  // 障害物から逃げるよう旋回
+        } else {
+            cmd_vel.linear.x = std::min(0.26, grad_magnitude);
+            cmd_vel.angular.z = std::max(-1.0, std::min(1.0, yaw_error));
         }
             cmd_vel_pub.publish(cmd_vel);
         // }

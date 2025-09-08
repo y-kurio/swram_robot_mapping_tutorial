@@ -5,11 +5,11 @@
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <!-- 無空間環境 -->
-    <!-- <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/> -->
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/empty.world"/>
     <!-- 自作環境用 -->
     <!-- <arg name="world_name" value="$(find swram_robot_mapping_tutorial)/launch/sinki/empty.world"/> -->
     <!-- 砂時計 -->
-    <arg name="world_name" value="$(find swram_robot_mapping_tutorial)/launch/sinki/sunadokei.world"/>
+    <!-- <arg name="world_name" value="$(find swram_robot_mapping_tutorial)/launch/sinki/sunadokei.world"/> -->
     <!-- 横11.5,7.8m縦11ｍ,間4m -->
     <!-- <arg name="world_name" value="$(find swram_robot_mapping_tutorial)/launch/sinki/sunadokei3m.world"/> -->
     <!-- 横7,7.5m縦10ｍ,間3m -->
