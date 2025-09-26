@@ -49,12 +49,6 @@ double ggetRandomAngle() {
     return random_angle = angle_degrees * M_PI / 180.0;
 }
 
-void computePotentialField() 
-{
-        
-        
-}
-
 void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボットの自己位置取得
 {
     odomdata_ = *msg;
@@ -111,28 +105,28 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         if (goal_hani_ < goal_torelanse_2)//閾値との相対距離比較
         {
             if (fabs(angle_error) > 0.09)
-        {
-            // 角度誤差が大きい場合は旋回
-            cmd_vel.linear.x = 0.0;
-            cmd_vel.linear.y = 0.0;
-            cmd_vel.linear.z = 0.0;
-            cmd_vel.angular.x = 0.0;
-            cmd_vel.angular.y = 0.0;
-            cmd_vel.angular.z = 0.1 * angle_error;
-            cmd_vel_pub.publish(cmd_vel);
-        } else
-        {
-            cmd_vel.linear.x = 0.2;
-            cmd_vel.linear.y = 0.0;
-            cmd_vel.linear.z = 0.0;
-            cmd_vel.angular.x = 0.0;
-            cmd_vel.angular.y = 0.0;
-            cmd_vel.angular.z = 0.0;
-        }
+            {
+                // 角度誤差が大きい場合は旋回
+                cmd_vel.linear.x = 0.0;
+                cmd_vel.linear.y = 0.0;
+                cmd_vel.linear.z = 0.0;
+                cmd_vel.angular.x = 0.0;
+                cmd_vel.angular.y = 0.0;
+                cmd_vel.angular.z = 0.1 * angle_error;
+                cmd_vel_pub.publish(cmd_vel);
+            } else
+            {
+                cmd_vel.linear.x = 0.2;
+                cmd_vel.linear.y = 0.0;
+                cmd_vel.linear.z = 0.0;
+                cmd_vel.angular.x = 0.0;
+                cmd_vel.angular.y = 0.0;
+                cmd_vel.angular.z = 0.0;
+            }
         }else 
         {
 
-            std::cout << "toutyaku!!!!!!" << std::endl;
+            // std::cout << "toutyaku!!!!!!" << std::endl;
 
             cmd_vel.linear.x = 0.0;
             cmd_vel.linear.y = 0.0;
@@ -264,15 +258,37 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         // 勾配ベクトルの大きさ → 前進速度に変換
         double grad_magnitude = std::sqrt(fx * fx + fy * fy);
 
+    // std::cout << "bekutoruookisa " << grad_magnitude << std::endl;
+
         geometry_msgs::Twist cmd;
         // --- バック条件 ---
         if (grad_magnitude > 0.1 && std::fabs(yaw_error) > M_PI/2) {
             // 勾配方向が前方 ±90° 以外 → 前進は危険
             cmd_vel.linear.x = -0.1;  // バック
             cmd_vel.angular.z = 0.5 * ((yaw_error > 0) ? 1 : -1);  // 障害物から逃げるよう旋回
-        } else {
+        } else if(grad_magnitude > 0.1) {
             cmd_vel.linear.x = std::min(0.26, grad_magnitude);
             cmd_vel.angular.z = std::max(-1.0, std::min(1.0, yaw_error));
+        } else if(grad_magnitude < 0.1){
+             if (fabs(angle_error) > 0.09)
+        {
+            // 角度誤差が大きい場合は旋回
+            cmd_vel.linear.x = 0.0;
+            cmd_vel.linear.y = 0.0;
+            cmd_vel.linear.z = 0.0;
+            cmd_vel.angular.x = 0.0;
+            cmd_vel.angular.y = 0.0;
+            cmd_vel.angular.z = 0.1 * angle_error;
+            cmd_vel_pub.publish(cmd_vel);
+        } else
+        {
+            cmd_vel.linear.x = 0.2;
+            cmd_vel.linear.y = 0.0;
+            cmd_vel.linear.z = 0.0;
+            cmd_vel.angular.x = 0.0;
+            cmd_vel.angular.y = 0.0;
+            cmd_vel.angular.z = 0.0;
+        }
         }
             cmd_vel_pub.publish(cmd_vel);
         // }

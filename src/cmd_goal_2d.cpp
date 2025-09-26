@@ -105,10 +105,11 @@ void sub_encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){//フォロワ
 void goalpublisher()//目標ゴール位置を送信
 {
     newgoal_pub.publish(sub_goal);
-    ROS_INFO("publish OK!!!" );
-    std::cout << "x: " << sub_goal.pose.position.x << std::endl;
-    std::cout << "y: " << sub_goal.pose.position.y << std::endl;
-    std::cout << "robotID: " << sub_pose_out.header.frame_id << std::endl;
+    // ROS_INFO("publish OK!!!" );
+    // std::cout << "x: " << sub_goal.pose.position.x << std::endl;
+    // std::cout << "y: " << sub_goal.pose.position.y << std::endl;
+    std::cout << "楕円kakudo: " << (theta / M_PI * 180) << std::endl;
+    std::cout << "robotID: " << sub_odom_point.header.frame_id << std::endl;
     visualization_msgs::Marker marker_sub_goal;
     marker_sub_goal.header.frame_id = "map";  // 基準座標系
     marker_sub_goal.header.stamp = ros::Time::now();
@@ -168,7 +169,16 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     // 0からRAND_MAXまでの整数を生成し、0.0〜1.0の範囲にスケール
     double random_value = static_cast<double>(rand()) / RAND_MAX;
     // ROS_INFO("Random value: %f", random_value);
-    double bunnsann = MIN_kyori_z / 6;
+    double dx = sub_pose_out.pose.position.x - pose_out.pose.position.x;
+    double dy = sub_pose_out.pose.position.y - pose_out.pose.position.y;
+    d_theta = atan2(dy, dx);
+
+    if (MIN_kyori_x > MIN_kyori_y)
+    {
+        bunnsann = MIN_kyori_x / 6;
+    }else{
+        bunnsann = MIN_kyori_y / 6;
+    }
     geometry_msgs::Quaternion q = pose_out.pose.orientation;  // 例: Odometryなどから取得
 
     // クオータニオン → tf2のQuaternion型へ変換
@@ -184,12 +194,12 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         {
             if (group_radius.orientation.w < (M_PI / 2))
                 {
-                    double theta = group_radius.orientation.w - (M_PI / 2);
+                    theta = group_radius.orientation.w - (M_PI / 2);
                     Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
             else if (group_radius.orientation.w > (M_PI / 2))
                 {
-                    double theta = group_radius.orientation.w - (M_PI / 2);
+                    theta = group_radius.orientation.w - (M_PI / 2);
                     Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
         }
@@ -197,23 +207,20 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         {
             if (group_radius.orientation.w > -(M_PI / 2))
                 {
-                    double theta = group_radius.orientation.w + (M_PI / 2);
+                    theta = group_radius.orientation.w + (M_PI / 2);
                     Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
             else if (group_radius.orientation.w < -(M_PI / 2))
                 {
-                    double theta = (M_PI / 2) + group_radius.orientation.w ;
+                    theta = (M_PI / 2) + group_radius.orientation.w ;
                     Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
         }
         
-        if (Vxx * Vyy - Vxy*Vxy >0)
+        if ((Vxx * Vyy) - (Vxy*Vxy) <0)
         {
-
-        }else
-        {
-            Vxx = group_radius.position.z / 3;
-            Vyy = group_radius.position.z / 3;
+            Vxx = pow(std::max(group_radius.position.z, 0.2) / 3 , 2 );
+            Vyy = pow(std::max(group_radius.position.z, 0.2) / 3 , 2 );
             Vxy = 0;
         }
             
@@ -229,6 +236,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         // std::cout << "y: " << pose_out.pose.position.y << std::endl;
     // std::cout << "goalaction: " << action_data_.status_list[0].status << std::endl;
     //リーダーフォロワ間の相対距離を計算
+    
     double kyori =(sqrt((sub_pose_out.pose.position.x - pose_out.pose.position.x)*(sub_pose_out.pose.position.x - pose_out.pose.position.x) + (sub_pose_out.pose.position.y - pose_out.pose.position.y)*(sub_pose_out.pose.position.y - pose_out.pose.position.y)));
     if (!is_initialized) 
     {
@@ -284,7 +292,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
             sub_goal.pose.orientation.z = quaternion.z;
             sub_goal.pose.orientation.w = quaternion.w;
             // number = 1;
-            ROS_INFO("syokai"); 
+            // ROS_INFO("syokai"); 
             goalpublisher();
             is_initialized = true;
         }
@@ -344,29 +352,14 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
             sub_goal.pose.orientation.z = quaternion.z;
             sub_goal.pose.orientation.w = quaternion.w;
             // number = 2;
-            ROS_INFO("seikou");
+            // ROS_INFO("seikou");
             goalpublisher();
         }
         
     }
-    else if ( kyori > 5 && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
-    {
-        // ロボットの位置を更新
-        ggetRandomAngle();
-        sub_goal.header.frame_id = FRAME_ROBOT_BASE;
-        sub_goal.header.stamp = ros::Time::now();
-        sub_goal.pose.position.x = 1.5*cos(random_angle) + pose_out.pose.position.x;
-        sub_goal.pose.position.y = 1.5*sin(random_angle) + pose_out.pose.position.y;
-        sub_goal.pose.position.z = 0.0;
-        sub_goal.pose.orientation.x = -0.0000365853737606;
-        sub_goal.pose.orientation.y = 0.00386090210218;
-        sub_goal.pose.orientation.z = 0.00758096193567;
-        sub_goal.pose.orientation.w = 0.999963809901;
-        // number = 1;
-        ROS_INFO("restart!!");
-        goalpublisher();
-    }
-
+    
+    
+    
     Eigen::SelfAdjointEigenSolver<Eigen::Matrix2d> eig_solver(A);
     Eigen::Vector2d eig_values = eig_solver.eigenvalues();
     Eigen::Matrix2d eig_vectors = eig_solver.eigenvectors();
@@ -389,8 +382,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     const int resolution = 100;
     for (int i = 0; i <= resolution; ++i)
     {
-        double theta = 2.0 * M_PI * i / resolution;
-        Eigen::Vector2d unit_circle(std::cos(theta), std::sin(theta));
+        double theta_ = 2.0 * M_PI * i / resolution;
+        Eigen::Vector2d unit_circle(std::cos(theta_), std::sin(theta_));
 
         // ✅ 修正された積の順序と型
         Eigen::Vector2d ellipse_point = eig_vectors * eig_values.cwiseSqrt().asDiagonal() * 3.0 * unit_circle;
@@ -403,6 +396,34 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     }
     // publish
     marker_pub.publish(ellipse);
+    
+    
+
+        Eigen::Vector2d unit_circle(std::cos(d_theta), std::sin(d_theta));
+        Eigen::Vector2d ellipse_point = eig_vectors * eig_values.cwiseSqrt().asDiagonal() * 3.0 * unit_circle;
+    d_kyori = sqrt(pow(ellipse_point.x(), 2) + pow(ellipse_point.y(), 2));
+    d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
+
+    
+    if ( d_kyori > d_robot_kyori && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
+    {
+        // ロボットの位置を更新
+        ggetRandomAngle();
+        sub_goal.header.frame_id = FRAME_ROBOT_BASE;
+        sub_goal.header.stamp = ros::Time::now();
+        sub_goal.pose.position.x = 1.5*cos(random_angle) + pose_out.pose.position.x;
+        sub_goal.pose.position.y = 1.5*sin(random_angle) + pose_out.pose.position.y;
+        sub_goal.pose.position.z = 0.0;
+        sub_goal.pose.orientation.x = -0.0000365853737606;
+        sub_goal.pose.orientation.y = 0.00386090210218;
+        sub_goal.pose.orientation.z = 0.00758096193567;
+        sub_goal.pose.orientation.w = 0.999963809901;
+        // number = 1;
+        // ROS_INFO("restart!!");
+        goalpublisher();
+    }
+
+
 
 }
 

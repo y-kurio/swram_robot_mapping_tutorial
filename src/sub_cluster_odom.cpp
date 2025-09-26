@@ -170,7 +170,7 @@ int main(int argc, char** argv) {
     static tf2_ros::TransformListener tfListener(tf_buffer_);
     // クラスタリング結果を購読
     ros::Subscriber cluster_sub = nh.subscribe("clustered_points", 10, clusterCallback);
-    ros::Subscriber encoder_sub = nh.subscribe("odom", 10, encoderCallback);
+    ros::Subscriber encoder_sub = nh.subscribe("/main/odom", 10, encoderCallback);
     // spreading_pub = nh.advertise<geometry_msgs::Vector3>("/Group_radius", 10);
     clusterling_pub = nh.advertise<swram_robot_mapping_tutorial::cluster_data>("clusterdata", 10);
 

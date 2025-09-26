@@ -54,6 +54,7 @@ geometry_msgs::TransformStamped sub_transformStamped;
         double myu_;
         double sigma_;
         double Vyy, Vxx, Vxy;
+        double bunnsann,theta, d_theta, d_robot_kyori, d_kyori;
 // static bool is_variable_set = false;
 
 // PointStamped型の配列を格納するベクター
