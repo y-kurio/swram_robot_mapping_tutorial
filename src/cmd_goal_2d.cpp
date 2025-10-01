@@ -122,6 +122,11 @@ void goalpublisher()//目標ゴール位置を送信
     marker_sub_goal.pose.position.y = sub_goal.pose.position.y;
     marker_sub_goal.pose.position.z = 0.01;  // わずかに浮かせる
 
+    marker_sub_goal.pose.orientation.x = 0.0;
+    marker_sub_goal.pose.orientation.y = 0.0;
+    marker_sub_goal.pose.orientation.z = 0.0;
+    marker_sub_goal.pose.orientation.w = 1.0;
+
     // サイズ（円の直径と厚み）
     marker_sub_goal.scale.x = 0.1;  // 直径
     marker_sub_goal.scale.y = 0.1;  // 直径
@@ -175,9 +180,9 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
 
     if (MIN_kyori_x > MIN_kyori_y)
     {
-        bunnsann = MIN_kyori_x / 6;
+        bunnsann = MIN_kyori_x / 1;
     }else{
-        bunnsann = MIN_kyori_y / 6;
+        bunnsann = MIN_kyori_y / 1;
     }
     geometry_msgs::Quaternion q = pose_out.pose.orientation;  // 例: Odometryなどから取得
 
@@ -405,7 +410,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
 
     
-    if ( d_kyori > d_robot_kyori && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
+    if ( d_kyori < d_robot_kyori && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
     {
         // ロボットの位置を更新
         ggetRandomAngle();
