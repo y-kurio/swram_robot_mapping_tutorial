@@ -25,7 +25,7 @@ private:
 public:
     LRFClustering() : wall_threshold_(30) {
         ros::NodeHandle private_nh("~");
-        private_nh.param("wall_threshold", wall_threshold_, 30);
+        private_nh.param("wall_threshold", wall_threshold_, 25);
 
         laser_sub_ = nh_.subscribe("scan", 10, &LRFClustering::laserCallback, this);
         cluster_pub_ = nh_.advertise<swram_robot_mapping_tutorial::cluster_data>("clustered_points", 10);
@@ -45,7 +45,7 @@ public:
         tree->setInputCloud(pcl_cloud);
 
         pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-        ec.setClusterTolerance(0.05);
+        ec.setClusterTolerance(0.1);
         ec.setMinClusterSize(5);
         ec.setMaxClusterSize(1000);
         ec.setSearchMethod(tree);

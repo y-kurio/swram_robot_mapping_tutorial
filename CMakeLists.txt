@@ -165,6 +165,7 @@ include_directories(
  add_executable(cmd_goal_2d src/cmd_goal_2d.cpp)
  add_executable(potensyaru src/potensyaru.cpp) 
  add_executable(30second_jikkenn src/30second_jikkenn.cpp)
+ add_executable(navigate src/navigate.cpp)
  
 #  add_executable(${PROJECT_NAME}_ms 
 #   src/move_spreading/constructor.cpp
@@ -215,6 +216,10 @@ target_link_libraries(potensyaru
   ${PCL_LIBRARIES}
 )
 target_link_libraries(30second_jikkenn
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+target_link_libraries(navigate
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
