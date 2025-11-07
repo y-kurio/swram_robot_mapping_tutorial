@@ -266,8 +266,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         double exponent = pre_x.transpose() * A.inverse() * pre_x;
         x_1_ = std::exp((pow(exponent, 2))/(2 * 2.25 * 2.25));
 
-        double exponent2 = -0.5 * (new_x.transpose() * A.inverse() * new_x)(0,0);
-        x_2_ = (1.0 / (2.0 * M_PI * sqrt(det_sigma))) * std::exp(exponent2);
+        double exponent2 = new_x.transpose() * A.inverse() * new_x;
+        x_2_ = std::exp((pow(exponent2, 2))/(2 * 2.25 * 2.25));
 
         SSS_ = x_2_ / x_1_;
         double roll = 0.0;    // X軸周りの回転
@@ -324,11 +324,12 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         new_x << move_pose_x_ - pose_out.pose.position.x,
                  move_pose_y_ - pose_out.pose.position.y;
 
-        double exponent = -0.5 * (pre_x.transpose() * A.inverse() * pre_x)(0,0);
-        x_1_ = (1.0 / (2.0 * M_PI * sqrt(det_sigma))) * std::exp(exponent);
+        double exponent = pre_x.transpose() * A.inverse() * pre_x;
+        x_1_ = std::exp((pow(exponent, 2))/(2 * 2.25 * 2.25));
 
-        double exponent2 = -0.5 * (new_x.transpose() * A.inverse() * new_x)(0,0);
-        x_2_ = (1.0 / (2.0 * M_PI * sqrt(det_sigma))) * std::exp(exponent2);
+        double exponent2 = new_x.transpose() * A.inverse() * new_x;
+        x_2_ = std::exp((pow(exponent2, 2))/(2 * 2.25 * 2.25));
+
 
         SSS_ = x_2_ / x_1_;
         double roll = 0.0;    // X軸周りの回転
