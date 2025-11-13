@@ -168,6 +168,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named maharanobisu
+
+# Build rule for target.
+maharanobisu: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 maharanobisu
+.PHONY : maharanobisu
+
+# fast build rule for target.
+maharanobisu/fast:
+	$(MAKE) -f CMakeFiles/maharanobisu.dir/build.make CMakeFiles/maharanobisu.dir/build
+.PHONY : maharanobisu/fast
+
+#=============================================================================
+# Target rules for targets named navigate
+
+# Build rule for target.
+navigate: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 navigate
+.PHONY : navigate
+
+# fast build rule for target.
+navigate/fast:
+	$(MAKE) -f CMakeFiles/navigate.dir/build.make CMakeFiles/navigate.dir/build
+.PHONY : navigate/fast
+
+#=============================================================================
 # Target rules for targets named 30second_jikkenn
 
 # Build rule for target.
@@ -1720,6 +1746,60 @@ src/keisoku.cpp.s:
 	$(MAKE) -f CMakeFiles/keisoku.dir/build.make CMakeFiles/keisoku.dir/src/keisoku.cpp.s
 .PHONY : src/keisoku.cpp.s
 
+src/maharanobisu.o: src/maharanobisu.cpp.o
+
+.PHONY : src/maharanobisu.o
+
+# target to build an object file
+src/maharanobisu.cpp.o:
+	$(MAKE) -f CMakeFiles/maharanobisu.dir/build.make CMakeFiles/maharanobisu.dir/src/maharanobisu.cpp.o
+.PHONY : src/maharanobisu.cpp.o
+
+src/maharanobisu.i: src/maharanobisu.cpp.i
+
+.PHONY : src/maharanobisu.i
+
+# target to preprocess a source file
+src/maharanobisu.cpp.i:
+	$(MAKE) -f CMakeFiles/maharanobisu.dir/build.make CMakeFiles/maharanobisu.dir/src/maharanobisu.cpp.i
+.PHONY : src/maharanobisu.cpp.i
+
+src/maharanobisu.s: src/maharanobisu.cpp.s
+
+.PHONY : src/maharanobisu.s
+
+# target to generate assembly for a file
+src/maharanobisu.cpp.s:
+	$(MAKE) -f CMakeFiles/maharanobisu.dir/build.make CMakeFiles/maharanobisu.dir/src/maharanobisu.cpp.s
+.PHONY : src/maharanobisu.cpp.s
+
+src/navigate.o: src/navigate.cpp.o
+
+.PHONY : src/navigate.o
+
+# target to build an object file
+src/navigate.cpp.o:
+	$(MAKE) -f CMakeFiles/navigate.dir/build.make CMakeFiles/navigate.dir/src/navigate.cpp.o
+.PHONY : src/navigate.cpp.o
+
+src/navigate.i: src/navigate.cpp.i
+
+.PHONY : src/navigate.i
+
+# target to preprocess a source file
+src/navigate.cpp.i:
+	$(MAKE) -f CMakeFiles/navigate.dir/build.make CMakeFiles/navigate.dir/src/navigate.cpp.i
+.PHONY : src/navigate.cpp.i
+
+src/navigate.s: src/navigate.cpp.s
+
+.PHONY : src/navigate.s
+
+# target to generate assembly for a file
+src/navigate.cpp.s:
+	$(MAKE) -f CMakeFiles/navigate.dir/build.make CMakeFiles/navigate.dir/src/navigate.cpp.s
+.PHONY : src/navigate.cpp.s
+
 src/potensyaru.o: src/potensyaru.cpp.o
 
 .PHONY : src/potensyaru.o
@@ -1785,6 +1865,8 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... test"
+	@echo "... maharanobisu"
+	@echo "... navigate"
 	@echo "... 30second_jikkenn"
 	@echo "... cmd_goal_2d"
 	@echo "... cluster_odom"
@@ -1912,6 +1994,12 @@ help:
 	@echo "... src/keisoku.o"
 	@echo "... src/keisoku.i"
 	@echo "... src/keisoku.s"
+	@echo "... src/maharanobisu.o"
+	@echo "... src/maharanobisu.i"
+	@echo "... src/maharanobisu.s"
+	@echo "... src/navigate.o"
+	@echo "... src/navigate.i"
+	@echo "... src/navigate.s"
 	@echo "... src/potensyaru.o"
 	@echo "... src/potensyaru.i"
 	@echo "... src/potensyaru.s"

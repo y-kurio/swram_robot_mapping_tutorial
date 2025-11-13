@@ -1,0 +1,15 @@
+<launch>
+  <node pkg="swram_robot_mapping_tutorial" type="maharanobisu" name="maharanobisu" output="screen">
+    <param name="frame_id" value="map" />
+    <param name="mu_x" value="1.0" />
+    <param name="mu_y" value="0.5" />
+    <!-- covariance: [sigma_00 sigma_01; sigma_01 sigma_11] -->
+    <param name="sigma_00" value="1.5" />
+    <param name="sigma_01" value="0.4" />
+    <param name="sigma_11" value="0.8" />
+    <param name="points_per_ellipse" value="120" />
+    <param name="publish_rate" value="2.0" />
+    <!-- optional: thresholds array -->
+    <param name="thresholds" value="[1.0,4.0,9.0]" />
+  </node>
+</launch>

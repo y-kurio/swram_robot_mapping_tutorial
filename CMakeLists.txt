@@ -166,6 +166,7 @@ include_directories(
  add_executable(potensyaru src/potensyaru.cpp) 
  add_executable(30second_jikkenn src/30second_jikkenn.cpp)
  add_executable(navigate src/navigate.cpp)
+ add_executable(maharanobisu src/maharanobisu.cpp)
  
 #  add_executable(${PROJECT_NAME}_ms 
 #   src/move_spreading/constructor.cpp
@@ -223,6 +224,7 @@ target_link_libraries(navigate
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
+target_link_libraries(maharanobisu ${catkin_LIBRARIES})
 
 # target_link_libraries(${PROJECT_NAME}_ms
 #   ${catkin_LIBRARIES}
