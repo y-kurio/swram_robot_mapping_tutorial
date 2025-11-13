@@ -249,8 +249,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         ggetRandomAngle();
         x_ = idoutyou_*cos(random_angle);
         y_ = idoutyou_*sin(random_angle);
-        move_pose_x_ = pose_out.pose.position.x + x_;
-        move_pose_y_ = pose_out.pose.position.y + y_;
+        move_pose_x_ = sub_pose_out.pose.position.x + x_;
+        move_pose_y_ = sub_pose_out.pose.position.y + y_;
         move_pose_ = sqrt(x_*x_ + y_*y_);
         pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.y), 2));
         newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
@@ -308,8 +308,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         ggetRandomAngle();
         x_ = idoutyou_*cos(random_angle);
         y_ = idoutyou_*sin(random_angle);
-        move_pose_x_ = pose_out.pose.position.x + x_;
-        move_pose_y_ = pose_out.pose.position.y + y_;
+        move_pose_x_ = sub_pose_out.pose.position.x + x_;
+        move_pose_y_ = sub_pose_out.pose.position.y + y_;
         move_pose_ = sqrt(x_*x_ + y_*y_);
         pre_dis = sqrt(pow((sub_pose_out.pose.position.x - pose_out.pose.position.x), 2) + pow((sub_pose_out.pose.position.y - pose_out.pose.position.y), 2));
         newposdis = sqrt(pow((move_pose_x_ - pose_out.pose.position.x), 2) + pow((move_pose_y_ - pose_out.pose.position.y), 2));
