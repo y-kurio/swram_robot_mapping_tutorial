@@ -163,6 +163,7 @@ include_directories(
  add_executable(cmd_vel src/cmd_vel.cpp)
  add_executable(cmd_goal src/cmd_goal.cpp)
  add_executable(cmd_goal_2d src/cmd_goal_2d.cpp)
+ add_executable(cmd_goal_maharanovis src/cmd_goal_maharanovis.cpp)
  add_executable(potensyaru src/potensyaru.cpp) 
  add_executable(30second_jikkenn src/30second_jikkenn.cpp)
  add_executable(navigate src/navigate.cpp)
@@ -212,6 +213,10 @@ target_link_libraries(cmd_goal_2d
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
+target_link_libraries(cmd_goal_maharanovis
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
 target_link_libraries(potensyaru
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
@@ -224,7 +229,9 @@ target_link_libraries(navigate
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
-target_link_libraries(maharanobisu ${catkin_LIBRARIES})
+target_link_libraries(maharanobisu
+  ${catkin_LIBRARIES}
+  )
 
 # target_link_libraries(${PROJECT_NAME}_ms
 #   ${catkin_LIBRARIES}
