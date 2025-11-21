@@ -58,8 +58,8 @@ int main(int argc, char** argv)
     Eigen::Vector2d mu(0.0,0.0);
     double sigma_q = 2.25;
     Eigen::Matrix2d Sigma;
-    Sigma << 9, 0.0,
-             0.0, 4;
+    Sigma << 25/9, 0.0,
+             0.0, 1;
     Eigen::Matrix2d invSigma = Sigma.inverse();
 
     double step = 0.01;  // 🔹 点をさらに密に

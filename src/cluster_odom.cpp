@@ -249,28 +249,28 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// if (MIN_kyori.orientation.w > 0)
-// {
-//     if (MIN_kyori.orientation.w < (M_PI / 2))
-//         {
-//             theta = MIN_kyori.orientation.w - (M_PI / 2);
-//         }
-//     else if (MIN_kyori.orientation.w > (M_PI / 2))
-//         {
-//             theta = MIN_kyori.orientation.w - (M_PI / 2);
-//         }
-// }
-// else if (MIN_kyori.orientation.w < 0)
-// {
-//     if (MIN_kyori.orientation.w > -(M_PI / 2))
-//         {
-//             theta = MIN_kyori.orientation.w + (M_PI / 2);
-//         }
-//     else if (MIN_kyori.orientation.w < -(M_PI / 2))
-//         {
-//             theta = (M_PI / 2) + MIN_kyori.orientation.w ;
-//         }
-// }
+if (MIN_kyori.orientation.w > 0)
+{
+    if (MIN_kyori.orientation.w < (M_PI / 2))
+        {
+            theta = MIN_kyori.orientation.w - (M_PI / 2);
+        }
+    else if (MIN_kyori.orientation.w > (M_PI / 2))
+        {
+            theta = MIN_kyori.orientation.w - (M_PI / 2);
+        }
+}
+else if (MIN_kyori.orientation.w < 0)
+{
+    if (MIN_kyori.orientation.w > -(M_PI / 2))
+        {
+            theta = MIN_kyori.orientation.w + (M_PI / 2);
+        }
+    else if (MIN_kyori.orientation.w < -(M_PI / 2))
+        {
+            theta = (M_PI / 2) + MIN_kyori.orientation.w ;
+        }
+}
 
 // for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
 //         for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
@@ -306,39 +306,39 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
         }
     }
 
-// // ループ内で Marker を作成
-// visualization_msgs::Marker points_marker;
-// points_marker.header.frame_id = "map";  // RViz の Fixed Frame に合わせる
-// points_marker.header.stamp = ros::Time::now();
-// points_marker.ns = "cluster_points";
-// points_marker.id = 0;
-// points_marker.type = visualization_msgs::Marker::SPHERE_LIST;  // 複数点をまとめて表示
-// points_marker.action = visualization_msgs::Marker::ADD;
+// ループ内で Marker を作成
+visualization_msgs::Marker points_marker;
+points_marker.header.frame_id = "map";  // RViz の Fixed Frame に合わせる
+points_marker.header.stamp = ros::Time::now();
+points_marker.ns = "cluster_points";
+points_marker.id = 0;
+points_marker.type = visualization_msgs::Marker::SPHERE_LIST;  // 複数点をまとめて表示
+points_marker.action = visualization_msgs::Marker::ADD;
 
-// // 点の大きさ
-// points_marker.scale.x = 0.05;
-// points_marker.scale.y = 0.05;
-// points_marker.scale.z = 0.05;
+// 点の大きさ
+points_marker.scale.x = 0.05;
+points_marker.scale.y = 0.05;
+points_marker.scale.z = 0.05;
 
-// // 色
-// points_marker.color.r = 1.0;
-// points_marker.color.g = 0.0;
-// points_marker.color.b = 0.0;
-// points_marker.color.a = 1.0;
+// 色
+points_marker.color.r = 1.0;
+points_marker.color.g = 0.0;
+points_marker.color.b = 0.0;
+points_marker.color.a = 1.0;
 
-// // cluster_data の各点を追加
-// for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
-//     for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); ++i) {
-//         geometry_msgs::Point p;
-//         p.x = cluster_data.cluster_points[cluster_id].polygon.points[i].x * sin(theta) + cluster_data.cluster_points[cluster_id].polygon.points[i].x * cos(theta);
-//         p.y = cluster_data.cluster_points[cluster_id].polygon.points[i].y * cos(theta) + cluster_data.cluster_points[cluster_id].polygon.points[i].y * -sin(theta);
-//         p.z = 0.0;  // 2D地図なので z=0
-//         points_marker.points.push_back(p);
-//     }
-// }
+// cluster_data の各点を追加
+for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
+    for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); ++i) {
+        geometry_msgs::Point p;
+        p.y = cluster_data.cluster_points[cluster_id].polygon.points[i].x * sin(-theta) + cluster_data.cluster_points[cluster_id].polygon.points[i].y * cos(-theta);
+        p.x = cluster_data.cluster_points[cluster_id].polygon.points[i].x * cos(-theta) + cluster_data.cluster_points[cluster_id].polygon.points[i].y * -sin(-theta);
+        p.z = 0.0;  // 2D地図なので z=0
+        points_marker.points.push_back(p);
+    }
+}
 
-// // publish
-// marker_pub.publish(points_marker);
+// publish
+marker_pub.publish(points_marker);
 
     if (MIN_kyori.position.x < 100)
     {

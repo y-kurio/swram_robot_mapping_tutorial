@@ -20,7 +20,7 @@
     <arg name="debug" value="false"/>
   </include>
 
-  <include file="$(find swram_robot_mapping_tutorial)/launch/turtlebot3_spawnvol1.launch">
+  <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/turtlebot3_spawnvol1.launch">
       <arg name="tf_prefix"       value="robot_1"/>
       <arg name="model"           value="waffle"/>
       <arg name="x_pos"           value="8.5"/>
@@ -63,7 +63,7 @@
       <arg name="y_pos"           value="8.5"/>
       <arg name="z_pos"           value="0.0"/>
       <arg name="yaw"             value="0.0"/>
-  </include>
+  </include> -->
   
   <!-- <include file="$(find swram_robot_mapping_tutorial)/launch/turtlebot3_spawnvol1.launch">
       <arg name="tf_prefix"       value="robot_6"/>
@@ -95,8 +95,8 @@
   <include file="$(find swram_robot_mapping_tutorial)/launch/turtlebot3_spawnvol1.launch">
       <arg name="tf_prefix"       value="main"/>
       <arg name="model"           value="burger"/>
-      <arg name="x_pos"           value="6.5"/>
-      <arg name="y_pos"           value="10.5"/>
+      <arg name="x_pos"           value="0.0"/>
+      <arg name="y_pos"           value="0.0"/>
       <arg name="z_pos"           value="0.0"/>
       <arg name="yaw"             value="0.0"/>
   </include>
