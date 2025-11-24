@@ -25,7 +25,7 @@ void Group_radiusCallback(const geometry_msgs::Pose::ConstPtr& msg)
     }
     if (group_radius.position.z == 0.0) 
     {
-        MIN_kyori_z = 6.0;
+        MIN_kyori_z = 4.0;
     }
     // MIN_kyori_x = 4.0;//std::abs(group_radius.x);
     // MIN_kyori_y = 9.0;//std::abs(group_radius.y);
