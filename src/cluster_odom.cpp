@@ -249,107 +249,107 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// if (MIN_kyori.orientation.w > 0)
-// {
-//     if (MIN_kyori.orientation.w < (M_PI / 2))
-//         {
-//             theta = MIN_kyori.orientation.w - (M_PI / 2);
-//         }
-//     else if (MIN_kyori.orientation.w > (M_PI / 2))
-//         {
-//             theta = MIN_kyori.orientation.w - (M_PI / 2);
-//         }
-// }
-// else if (MIN_kyori.orientation.w < 0)
-// {
-//     if (MIN_kyori.orientation.w > -(M_PI / 2))
-//         {
-//             theta = MIN_kyori.orientation.w + (M_PI / 2);
-//         }
-//     else if (MIN_kyori.orientation.w < -(M_PI / 2))
-//         {
-//             theta = (M_PI / 2) + MIN_kyori.orientation.w ;
-//         }
-// }
+if (MIN_kyori.orientation.w > 0)
+{
+    if (MIN_kyori.orientation.w < (M_PI / 2))
+        {
+            theta = MIN_kyori.orientation.w - (M_PI / 2);
+        }
+    else if (MIN_kyori.orientation.w > (M_PI / 2))
+        {
+            theta = MIN_kyori.orientation.w - (M_PI / 2);
+        }
+}
+else if (MIN_kyori.orientation.w < 0)
+{
+    if (MIN_kyori.orientation.w > -(M_PI / 2))
+        {
+            theta = MIN_kyori.orientation.w + (M_PI / 2);
+        }
+    else if (MIN_kyori.orientation.w < -(M_PI / 2))
+        {
+            theta = (M_PI / 2) + MIN_kyori.orientation.w ;
+        }
+}
 
-// for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
-//         for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
-//         {
-//             if (cluster_data.cluster_type[cluster_id] == 2.0)
-//             {
-//                 double dx = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
-//                 double dy = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
-//                 wall_theta = atan2(dy, dx);
-//                 if (MIN_kyori.orientation.w > 0)
-//                 {
-//                     if (wall_theta < 0.087 + wall_theta && wall_theta > -0.087 + wall_theta && wall_theta <  0.087 + 3.14 + wall_theta && wall_theta > -0.087 + wall_theta + 3.14)
-//                     {
-//                         double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
-//                         if (kyori_x < MIN_kyori.position.x)
-//                         {
-//                             MIN_kyori.position.x = kyori_x;
-//                         }
-//                         std::cout << "1" << std::endl;
-//                     }
-//                     if (wall_theta < 0.087 + wall_theta + 1.57 && wall_theta > -0.087 + wall_theta + 1.57 && wall_theta <  0.087 -1.57 + wall_theta && wall_theta > -0.087 + wall_theta -1.57)
-//                     {
-//                         double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
-//                         if (kyori_y < MIN_kyori.position.y)
-//                         {
-//                             MIN_kyori.position.y = kyori_y;
-//                         }
-//                         std::cout << "2" << std::endl;
-//                     }
-//                 }
-//                 else if (MIN_kyori.orientation.w < 0)
-//                 {
-//                     if (wall_theta < 0.087 + wall_theta && wall_theta > -0.087 + wall_theta && wall_theta <  0.087 + 3.14 + wall_theta && wall_theta > -0.087 + wall_theta + 3.14)
-//                     {
-//                         double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
-//                         if (kyori_x < MIN_kyori.position.x)
-//                         {
-//                             MIN_kyori.position.x = kyori_x;
-//                         }
-//                         std::cout << "3" << std::endl;
-//                     }
-//                     if (wall_theta < 0.087 + wall_theta + 1.57 && wall_theta > -0.087 + wall_theta + 1.57 && wall_theta <  0.087 -1.57 + wall_theta && wall_theta > -0.087 + wall_theta -1.57)
-//                     {
-//                         double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
-//                         if (kyori_y < MIN_kyori.position.y)
-//                         {
-//                             MIN_kyori.position.y = kyori_y;
-//                         }
-//                         std::cout << "4" << std::endl;
-//                     }
-//                 }
-                
-//             }
-//         }
-//     }
-
-
-    for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
+for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
         for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
         {
-            if ((pose_out_.pose.position.y - 0.15) < cluster_data.cluster_points[cluster_id].polygon.points[i].y && (pose_out_.pose.position.y + 0.15) > cluster_data.cluster_points[cluster_id].polygon.points[i].y && cluster_data.cluster_type[cluster_id] == 2.0)
+            if (cluster_data.cluster_type[cluster_id] == 2.0)
             {
-                double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
-                if (kyori_x < MIN_kyori.position.x)
+                double dx = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
+                double dy = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
+                wall_theta = atan2(dy, dx);
+                if (MIN_kyori.orientation.w > 0)
                 {
-                    MIN_kyori.position.x = kyori_x;
+                    if (wall_theta < 0.087 + wall_theta || wall_theta > -0.087 + wall_theta || wall_theta <  0.087 + 3.14 + wall_theta || wall_theta > -0.087 + wall_theta + 3.14)
+                    {
+                        double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
+                        if (kyori_x < MIN_kyori.position.x)
+                        {
+                            MIN_kyori.position.x = kyori_x;
+                        }
+                        std::cout << "1" << std::endl;
+                    }
+                    if (wall_theta < 0.087 + wall_theta + 1.57 || wall_theta > -0.087 + wall_theta + 1.57 || wall_theta <  0.087 -1.57 + wall_theta || wall_theta > -0.087 + wall_theta -1.57)
+                    {
+                        double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
+                        if (kyori_y < MIN_kyori.position.y)
+                        {
+                            MIN_kyori.position.y = kyori_y;
+                        }
+                        std::cout << "2" << std::endl;
+                    }
                 }
-            }
-            
-            if ((pose_out_.pose.position.x - 0.15) < cluster_data.cluster_points[cluster_id].polygon.points[i].x && (pose_out_.pose.position.x + 0.15) > cluster_data.cluster_points[cluster_id].polygon.points[i].x && cluster_data.cluster_type[cluster_id] == 2.0)
-            {
-                double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
-                if (kyori_y < MIN_kyori.position.y)
+                else if (MIN_kyori.orientation.w < 0)
                 {
-                    MIN_kyori.position.y = kyori_y;
+                    if (wall_theta < 0.087 + wall_theta || wall_theta > -0.087 + wall_theta || wall_theta <  0.087 + 3.14 + wall_theta || wall_theta > -0.087 + wall_theta + 3.14)
+                    {
+                        double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
+                        if (kyori_x < MIN_kyori.position.x)
+                        {
+                            MIN_kyori.position.x = kyori_x;
+                        }
+                        std::cout << "3" << std::endl;
+                    }
+                    if (wall_theta < 0.087 + wall_theta + 1.57 || wall_theta > -0.087 + wall_theta + 1.57 || wall_theta <  0.087 -1.57 + wall_theta || wall_theta > -0.087 + wall_theta -1.57)
+                    {
+                        double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
+                        if (kyori_y < MIN_kyori.position.y)
+                        {
+                            MIN_kyori.position.y = kyori_y;
+                        }
+                        std::cout << "4" << std::endl;
+                    }
                 }
+                
             }
         }
     }
+
+
+    // for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
+    //     for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
+    //     {
+    //         if ((pose_out_.pose.position.y - 0.15) < cluster_data.cluster_points[cluster_id].polygon.points[i].y && (pose_out_.pose.position.y + 0.15) > cluster_data.cluster_points[cluster_id].polygon.points[i].y && cluster_data.cluster_type[cluster_id] == 2.0)
+    //         {
+    //             double kyori_x = cluster_data.cluster_points[cluster_id].polygon.points[i].x - pose_out_.pose.position.x;
+    //             if (kyori_x < MIN_kyori.position.x)
+    //             {
+    //                 MIN_kyori.position.x = kyori_x;
+    //             }
+    //         }
+            
+    //         if ((pose_out_.pose.position.x - 0.15) < cluster_data.cluster_points[cluster_id].polygon.points[i].x && (pose_out_.pose.position.x + 0.15) > cluster_data.cluster_points[cluster_id].polygon.points[i].x && cluster_data.cluster_type[cluster_id] == 2.0)
+    //         {
+    //             double kyori_y = cluster_data.cluster_points[cluster_id].polygon.points[i].y - pose_out_.pose.position.y;
+    //             if (kyori_y < MIN_kyori.position.y)
+    //             {
+    //                 MIN_kyori.position.y = kyori_y;
+    //             }
+    //         }
+    //     }
+    // }
 
 // ループ内で Marker を作成
 visualization_msgs::Marker points_marker;
