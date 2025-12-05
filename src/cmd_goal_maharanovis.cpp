@@ -193,19 +193,16 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     double pose_out_roll, pose_out_pitch, pose_out_yaw;
     tf2::Matrix3x3(quat).getRPY(pose_out_roll, pose_out_pitch, pose_out_yaw);
 
-        Vxx = pow(std::max(MIN_kyori_x, 0.2) / 3 , 2 );
-        Vyy = pow(std::max(MIN_kyori_y, 0.2) / 3 , 2 );
+        
         if (group_radius.orientation.w > 0)
         {
             if (group_radius.orientation.w < (M_PI / 2))
                 {
                     theta = group_radius.orientation.w - (M_PI / 2);
-                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
             else if (group_radius.orientation.w > (M_PI / 2))
                 {
                     theta = group_radius.orientation.w - (M_PI / 2);
-                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
         }
         else if (group_radius.orientation.w < 0)
@@ -213,27 +210,38 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
             if (group_radius.orientation.w > -(M_PI / 2))
                 {
                     theta = group_radius.orientation.w + (M_PI / 2);
-                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
             else if (group_radius.orientation.w < -(M_PI / 2))
                 {
                     theta = (M_PI / 2) + group_radius.orientation.w ;
-                    Vxy = ((Vxx - Vyy) / 2) * tan(2 * theta);
                 }
         }
         
-        if ((Vxx * Vyy) - (Vxy*Vxy) <0)
-        {
-            Vxx = pow(std::max(group_radius.position.z, 0.2) / 3 , 2 );
-            Vyy = pow(std::max(group_radius.position.z, 0.2) / 3 , 2 );
-            Vxy = 0;
-        }
+        Eigen::Matrix2d R;
+        R << std::cos(theta), -std::sin(theta),
+            std::sin(theta),  std::cos(theta);
+
+        // --- diagonal of squared semi-axes ---
+        Eigen::Matrix2d D = Eigen::Matrix2d::Zero();
+        D(0,0) = pow(std::min(4.0, std::max(MIN_kyori_x, 0.2)) / 3.0 , 2);
+        D(1,1) = pow(std::min(4.0, std::max(MIN_kyori_y, 0.2)) / 3.0 , 2);
+
+
+        // --- Sigma = R * D * R^T ---
+        A = R * D * R.transpose();
+
+        // if ((Vxx * Vyy) - (Vxy*Vxy) <0)
+        // {
+        //     Vxx = pow(std::max(group_radius.position.z, 0.2) / 3 , 2 );
+        //     Vyy = pow(std::max(group_radius.position.z, 0.2) / 3 , 2 );
+        //     Vxy = 0;
+        // }
             
         
 
-        // 2x2行列の定義
-        A << Vxx, Vxy,
-            Vxy, Vyy;
+        // // 2x2行列の定義
+        // A << Vxx, Vxy,
+        //     Vxy, Vyy;
 
     
         // ROS_INFO("FRAME_ROBOT_BASE=%s",FRAME_ROBOT_BASE);
@@ -284,7 +292,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
 
                 
         //  SSSの条件分岐
-        if( SSS_ > random_value && newposdis > 1.0 )//ランダムな値と比較したものを比較
+        if( SSS_ > random_value && newposdis > 0.6 )//ランダムな値と比較したものを比較
         {
             // ロボットの位置を更新
             sub_goal.header.frame_id = FRAME_ROBOT_BASE;
@@ -345,7 +353,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         quaternion.w = q.w();
 
 
-        if( SSS_ > random_value && newposdis > 1.0  )//  SSSの条件分岐
+        if( SSS_ > random_value && newposdis > 0.6  )//  SSSの条件分岐
         {
             // ロボットの位置を更新
             sub_goal.header.frame_id = FRAME_ROBOT_BASE;

@@ -254,10 +254,12 @@ if (MIN_kyori.orientation.w > 0)
     if (MIN_kyori.orientation.w < (M_PI / 2))
         {
             theta = MIN_kyori.orientation.w - (M_PI / 2);
+            MIN_kyori.orientation.z = theta;
         }
     else if (MIN_kyori.orientation.w > (M_PI / 2))
         {
             theta = MIN_kyori.orientation.w - (M_PI / 2);
+            MIN_kyori.orientation.z = theta;
         }
 }
 else if (MIN_kyori.orientation.w < 0)
@@ -265,10 +267,12 @@ else if (MIN_kyori.orientation.w < 0)
     if (MIN_kyori.orientation.w > -(M_PI / 2))
         {
             theta = MIN_kyori.orientation.w + (M_PI / 2);
+            MIN_kyori.orientation.z = theta;
         }
     else if (MIN_kyori.orientation.w < -(M_PI / 2))
         {
             theta = (M_PI / 2) + MIN_kyori.orientation.w ;
+            MIN_kyori.orientation.z = theta;
         }
 }
 
