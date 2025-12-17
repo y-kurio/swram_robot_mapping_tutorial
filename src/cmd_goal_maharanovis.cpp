@@ -180,9 +180,9 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
 
     if (MIN_kyori_x > MIN_kyori_y)
     {
-        bunnsann = MIN_kyori_x / 1;
+        bunnsann = MIN_kyori_x / 2;
     }else{
-        bunnsann = MIN_kyori_y / 1;
+        bunnsann = MIN_kyori_y / 2;
     }
     geometry_msgs::Quaternion q = pose_out.pose.orientation;  // 例: Odometryなどから取得
 
@@ -373,50 +373,58 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     }
     
     
-    
-    Eigen::SelfAdjointEigenSolver<Eigen::Matrix2d> eig_solver(A);
-    Eigen::Vector2d eig_values = eig_solver.eigenvalues();
-    Eigen::Matrix2d eig_vectors = eig_solver.eigenvectors();
-
     visualization_msgs::Marker ellipse;
-    ellipse.header.frame_id = "map";
-    ellipse.header.stamp = ros::Time::now();
-    ellipse.ns = "covariance_ellipse";
-    ellipse.id = 0;
-    ellipse.type = visualization_msgs::Marker::LINE_STRIP;
-    ellipse.action = visualization_msgs::Marker::ADD;
-    ellipse.pose.orientation.w = 1.0;
-    ellipse.scale.x = 0.03;
+ellipse.header.frame_id = "map";
+ellipse.header.stamp = ros::Time::now();
+ellipse.ns = "covariance_ellipse";
+ellipse.id = 0;
+ellipse.type = visualization_msgs::Marker::LINE_STRIP;
+ellipse.action = visualization_msgs::Marker::ADD;
+ellipse.pose.orientation.w = 1.0;
+ellipse.scale.x = 0.03;
 
-    ellipse.color.r = 1.0;
-    ellipse.color.g = 0.0;
-    ellipse.color.b = 0.0;
-    ellipse.color.a = 1.0;
+ellipse.color.r = 1.0;
+ellipse.color.g = 0.0;
+ellipse.color.b = 0.0;
+ellipse.color.a = 1.0;
 
-    const int resolution = 100;
-    for (int i = 0; i <= resolution; ++i)
-    {
-        double theta_ = 2.0 * M_PI * i / resolution;
-        Eigen::Vector2d unit_circle(std::cos(theta_), std::sin(theta_));
+// === あなたが元々持っている値 ===
+double a = MIN_kyori_x;  // = 半軸長ここの変換がおかしい
+double b = MIN_kyori_y;
 
-        // ✅ 修正された積の順序と型
-        Eigen::Vector2d ellipse_point = eig_vectors * eig_values.cwiseSqrt().asDiagonal() * 3.0 * unit_circle;
+const int resolution = 100;
+for (int i = 0; i <= resolution; ++i)
+{
+    double t = 2.0 * M_PI * i / resolution;
 
-        geometry_msgs::Point p;
-        p.x = ellipse_point.x() + pose_out.pose.position.x;
-        p.y = ellipse_point.y() + pose_out.pose.position.y;
-        p.z = 0.0;
-        ellipse.points.push_back(p);
-    }
-    // publish
-    marker_pub.publish(ellipse);
-    
-    
+    // --- 楕円（回転前）---
+    double x = a * std::cos(t);
+    double y = b * std::sin(t);
 
-        Eigen::Vector2d unit_circle(std::cos(d_theta), std::sin(d_theta));
-        Eigen::Vector2d ellipse_point = eig_vectors * eig_values.cwiseSqrt().asDiagonal() * 3.0 * unit_circle;
-    d_kyori = sqrt(pow(ellipse_point.x(), 2) + pow(ellipse_point.y(), 2));
-    d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
+    // --- 回転（R を直接適用）---
+    double xr =  std::cos(theta) * x - std::sin(theta) * y;
+    double yr =  std::sin(theta) * x + std::cos(theta) * y;
+
+    geometry_msgs::Point p;
+    p.x = xr + pose_out.pose.position.x;
+    p.y = yr + pose_out.pose.position.y;
+    p.z = 0.0;
+
+    ellipse.points.push_back(p);
+}
+
+marker_pub.publish(ellipse);
+
+double x = a * std::cos(d_theta);
+double y = b * std::sin(d_theta);
+
+// 回転
+double xr =  std::cos(theta) * x - std::sin(theta) * y;
+double yr =  std::sin(theta) * x + std::cos(theta) * y;
+
+// 距離
+d_kyori = std::sqrt(xr*xr + yr*yr);
+d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
 
     
     if ( d_kyori < d_robot_kyori && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
@@ -425,8 +433,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
         ggetRandomAngle();
         sub_goal.header.frame_id = FRAME_ROBOT_BASE;
         sub_goal.header.stamp = ros::Time::now();
-        sub_goal.pose.position.x = 1.5*cos(random_angle) + pose_out.pose.position.x;
-        sub_goal.pose.position.y = 1.5*sin(random_angle) + pose_out.pose.position.y;
+        sub_goal.pose.position.x = 0.6*cos(random_angle) + pose_out.pose.position.x;
+        sub_goal.pose.position.y = 0.6*sin(random_angle) + pose_out.pose.position.y;
         sub_goal.pose.position.z = 0.0;
         sub_goal.pose.orientation.x = -0.0000365853737606;
         sub_goal.pose.orientation.y = 0.00386090210218;

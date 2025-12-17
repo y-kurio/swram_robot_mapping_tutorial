@@ -276,7 +276,7 @@ else if (MIN_kyori.orientation.w < 0)
         }
 }
 
-for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {
+for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {//ちかいしょうがいぶつのたんさくをもうすこしうまくやるひつよがある
         for (int i = 0; i < cluster_data.cluster_points[cluster_id].polygon.points.size(); i++) 
         {
             if (cluster_data.cluster_type[cluster_id] == 2.0)
