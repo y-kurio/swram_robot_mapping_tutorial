@@ -108,8 +108,8 @@ void goalpublisher()//目標ゴール位置を送信
     // ROS_INFO("publish OK!!!" );
     // std::cout << "x: " << sub_goal.pose.position.x << std::endl;
     // std::cout << "y: " << sub_goal.pose.position.y << std::endl;
-    std::cout << "楕円kakudo: " << (theta / M_PI * 180) << std::endl;
-    std::cout << "robotID: " << sub_odom_point.header.frame_id << std::endl;
+    // std::cout << "楕円kakudo: " << (theta / M_PI * 180) << std::endl;
+    std::cout << "robotID: " << sub_odom_point.header.frame_id << "OK!!!!!!!!!!" << std::endl;
     visualization_msgs::Marker marker_sub_goal;
     marker_sub_goal.header.frame_id = "map";  // 基準座標系
     marker_sub_goal.header.stamp = ros::Time::now();
@@ -427,14 +427,14 @@ d_kyori = std::sqrt(xr*xr + yr*yr);
 d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
 
     
-    if ( d_kyori < d_robot_kyori && goal_status.data == 1 && param2 > d_robot_kyori)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
+    if ( d_kyori < d_robot_kyori && goal_status.data == 1 && 5.0 > d_robot_kyori)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
     {
         // ロボットの位置を更新
         ggetRandomAngle();
         sub_goal.header.frame_id = FRAME_ROBOT_BASE;
         sub_goal.header.stamp = ros::Time::now();
-        sub_goal.pose.position.x = param1*cos(random_angle) + pose_out.pose.position.x;
-        sub_goal.pose.position.y = param1*sin(random_angle) + pose_out.pose.position.y;
+        sub_goal.pose.position.x = 0.5*cos(random_angle) + pose_out.pose.position.x;
+        sub_goal.pose.position.y = 0.5*sin(random_angle) + pose_out.pose.position.y;
         sub_goal.pose.position.z = 0.0;
         sub_goal.pose.orientation.x = -0.0000365853737606;
         sub_goal.pose.orientation.y = 0.00386090210218;
@@ -443,7 +443,7 @@ d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
         // number = 1;
         // ROS_INFO("restart!!");
         goalpublisher();
-    }else if (param2 < d_robot_kyori)
+    }else if (5.0 < d_robot_kyori && goal_status.data == 1)
     {
         sub_goal.header.frame_id = FRAME_ROBOT_BASE;
         sub_goal.header.stamp = ros::Time::now();
@@ -454,6 +454,8 @@ d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
         sub_goal.pose.orientation.y = 0.00386090210218;
         sub_goal.pose.orientation.z = 0.00758096193567;
         sub_goal.pose.orientation.w = 0.999963809901;
+
+        std::cout << "robotID: " << sub_odom_point.header.frame_id << "STOP!!!!!!" << std::endl;
         // number = 1;
         // ROS_INFO("restart!!");
         goalpublisher();
