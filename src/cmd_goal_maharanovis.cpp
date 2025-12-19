@@ -389,8 +389,8 @@ ellipse.color.b = 0.0;
 ellipse.color.a = 1.0;
 
 // === あなたが元々持っている値 ===
-double a = MIN_kyori_x;  // = 半軸長ここの変換がおかしい
-double b = MIN_kyori_y;
+double a = abs(MIN_kyori_x);  // = 半軸長ここの変換がおかしい
+double b = abs(MIN_kyori_y);
 
 const int resolution = 100;
 for (int i = 0; i <= resolution; ++i)
@@ -427,14 +427,28 @@ d_kyori = std::sqrt(xr*xr + yr*yr);
 d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
 
     
-    if ( d_kyori < d_robot_kyori && goal_status.data == 1)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
+    if ( d_kyori < d_robot_kyori && goal_status.data == 1 && param2 > d_robot_kyori)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
     {
         // ロボットの位置を更新
         ggetRandomAngle();
         sub_goal.header.frame_id = FRAME_ROBOT_BASE;
         sub_goal.header.stamp = ros::Time::now();
-        sub_goal.pose.position.x = 0.6*cos(random_angle) + pose_out.pose.position.x;
-        sub_goal.pose.position.y = 0.6*sin(random_angle) + pose_out.pose.position.y;
+        sub_goal.pose.position.x = param1*cos(random_angle) + pose_out.pose.position.x;
+        sub_goal.pose.position.y = param1*sin(random_angle) + pose_out.pose.position.y;
+        sub_goal.pose.position.z = 0.0;
+        sub_goal.pose.orientation.x = -0.0000365853737606;
+        sub_goal.pose.orientation.y = 0.00386090210218;
+        sub_goal.pose.orientation.z = 0.00758096193567;
+        sub_goal.pose.orientation.w = 0.999963809901;
+        // number = 1;
+        // ROS_INFO("restart!!");
+        goalpublisher();
+    }else if (param2 < d_robot_kyori)
+    {
+        sub_goal.header.frame_id = FRAME_ROBOT_BASE;
+        sub_goal.header.stamp = ros::Time::now();
+        sub_goal.pose.position.x = sub_pose_out.pose.position.x;
+        sub_goal.pose.position.y = sub_pose_out.pose.position.y;
         sub_goal.pose.position.z = 0.0;
         sub_goal.pose.orientation.x = -0.0000365853737606;
         sub_goal.pose.orientation.y = 0.00386090210218;
@@ -455,8 +469,8 @@ int main(int argc, char** argv)
     ros::NodeHandle nh;
     ros::NodeHandle n("~");
     n.getParam("FRAME/ROBOT_BASE",FRAME_ROBOT_BASE);
-    n.getParam("HEIKINTI",param1);
-    n.getParam("BUNNSANN",param2);
+    n.getParam("GENTENSIKIITI",param1);
+    n.getParam("HANISIKIITI",param2);
     static tf2_ros::TransformListener tfListener(tf_buffer_);
     // シードを設定（現在時刻を使う）
     srand(time(NULL));

@@ -3,8 +3,8 @@
     <group ns="$(arg multi_robot)_1">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="0.6"/>
+            <param name="HANISIKIITI"      value="5.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -21,8 +21,8 @@
     <group ns="$(arg multi_robot)_2">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="1.5"/>
+            <param name="HANISIKIITI"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -39,8 +39,8 @@
     <group ns="$(arg multi_robot)_3">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="1.5"/>
+            <param name="HANISIKIITI"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -57,8 +57,8 @@
     <group ns="$(arg multi_robot)_4">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="1.5"/>
+            <param name="HANISIKIITI"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -75,8 +75,8 @@
     <group ns="$(arg multi_robot)_5">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="1.5"/>
+            <param name="HANISIKIITI"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -93,8 +93,8 @@
     <!-- <group ns="$(arg multi_robot)_6">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="1.5"/>
+            <param name="HANISIKIITI"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -111,8 +111,8 @@
     <group ns="$(arg multi_robot)_7">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="1.5"/>
+            <param name="HANISIKIITI"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
@@ -129,8 +129,8 @@
     <group ns="$(arg multi_robot)_8">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
-            <param name="HEIKINTI"      value="1.5"/>
-            <param name="BUNNSANN"      value="2.0"/>
+            <param name="GENTENSIKIITI"      value="1.5"/>
+            <param name="HANISIKIITI"      value="2.0"/>
         </node>
         <node pkg="swram_robot_mapping_tutorial" type="cmd_vel" name="cmd_vel" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
