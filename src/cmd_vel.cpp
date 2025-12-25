@@ -57,24 +57,24 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     odom_point.point = odomdata_.pose.pose.position;
 
     geometry_msgs::PoseStamped pre_point;
-    pre_point.header = odomdata_.header;
-    pre_point.pose = odomdata_.pose.pose;
+    pose_out.header = odomdata_.header;
+    pose_out.pose = odomdata_.pose.pose;
     
     geometry_msgs::TransformStamped transformStamped;
     geometry_msgs::Twist cmd_vel;
     
-    try
-    {
-        transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, pre_point.header.frame_id, pre_point.header.stamp, ros::Duration(0.0));
-    }
-    catch (tf2::TransformException &ex) 
-    {
-        // ROS_INFO("Random value: %f", random_value);
-        ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
-    }
+    // try
+    // {
+    //     transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, pre_point.header.frame_id, pre_point.header.stamp, ros::Duration(0.0));
+    // }
+    // catch (tf2::TransformException &ex) 
+    // {
+    //     // ROS_INFO("Random value: %f", random_value);
+    //     ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
+    // }
     
-    tf2::doTransform(pre_point, pose_out, transformStamped);
-    //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // tf2::doTransform(pre_point, pose_out, transformStamped);
+    // //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
     //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーゴール位置との相対位置を計算
     d_goal.pose.position.x = target_goal.pose.position.x - pose_out.pose.position.x;
@@ -267,7 +267,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
             cmd_vel.linear.x = -0.1;  // バック
             cmd_vel.angular.z = 0.5 * ((yaw_error > 0) ? 1 : -1);  // 障害物から逃げるよう旋回
         } else if(grad_magnitude > 0.1) {
-            cmd_vel.linear.x = std::min(0.26, grad_magnitude);
+            cmd_vel.linear.x = std::min(0.22, grad_magnitude);
             cmd_vel.angular.z = std::max(-1.0, std::min(1.0, yaw_error));
         } else if(grad_magnitude < 0.1){
              if (fabs(angle_error) > 0.09)

@@ -45,8 +45,8 @@ public:
         tree->setInputCloud(pcl_cloud);
 
         pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-        ec.setClusterTolerance(0.1);
-        ec.setMinClusterSize(5);
+        ec.setClusterTolerance(0.05);
+        ec.setMinClusterSize(3);
         ec.setMaxClusterSize(1000);
         ec.setSearchMethod(tree);
         ec.setInputCloud(pcl_cloud);

@@ -10,9 +10,9 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.35"/>
-            <param name="repulsive_range"      value="0.4"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.45"/>
+            <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>
         </node>
@@ -28,8 +28,8 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.1"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.5"/>
             <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>
@@ -46,8 +46,8 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.1"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.45"/>
             <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>
@@ -64,15 +64,15 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.1"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.45"/>
             <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>
         </node>
     </group>
         
-    <group ns="$(arg multi_robot)_5">
+    <!-- <group ns="$(arg multi_robot)_5">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="GENTENSIKIITI"      value="1.5"/>
@@ -82,13 +82,13 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.1"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.25"/>
             <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>
         </node>
-    </group>
+    </group> -->
         
     <!-- <group ns="$(arg multi_robot)_6">
         <node pkg="swram_robot_mapping_tutorial" type="cmd_goal_maharanovis" name="cmd_goal_maharanovis" output="screen">
@@ -100,8 +100,8 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.1"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.45"/>
             <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>
@@ -118,8 +118,8 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.1"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.45"/>
             <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>
@@ -136,8 +136,8 @@
             <param name="FRAME/ROBOT_BASE"      value="map"/>
             <param name="goal_torelanse"      value="0.30"/>
             <param name="goal_torelanse_2"      value="0.05"/>
-            <param name="attractive_gain"      value="0.3"/>
-            <param name="repulsive_gain"      value="0.1"/>
+            <param name="attractive_gain"      value="0.2"/>
+            <param name="repulsive_gain"      value="0.45"/>
             <param name="repulsive_range"      value="0.6"/>
             <param name="grid_size"      value="0.10"/>
             <param name="grid_resolution"      value="0.10"/>

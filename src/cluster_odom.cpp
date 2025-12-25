@@ -195,8 +195,8 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     odom_point.point = odomdata_.pose.pose.position;
 
     geometry_msgs::PoseStamped pre_point_;
-    pre_point_.header = odomdata_.header;
-    pre_point_.pose = odomdata_.pose.pose;
+    pose_out_.header = odomdata_.header;
+    pose_out_.pose = odomdata_.pose.pose;
     
     geometry_msgs::TransformStamped transformStamped;
     double kyori;
@@ -204,17 +204,17 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){
     MIN_kyori.position.y = std::numeric_limits<double>::max();
     MIN_kyori.position.z = std::numeric_limits<double>::max();
     
-    try
-    {
-        transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, pre_point_.header.frame_id, pre_point_.header.stamp, ros::Duration(0.0));
-    }
-    catch (tf2::TransformException &ex) 
-    {
-        // ROS_INFO("Random value: %f", random_value);
-        ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
-    }
+    // try
+    // {
+    //     transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, pre_point_.header.frame_id, pre_point_.header.stamp, ros::Duration(0.0));
+    // }
+    // catch (tf2::TransformException &ex) 
+    // {
+    //     // ROS_INFO("Random value: %f", random_value);
+    //     ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
+    // }
     
-    tf2::doTransform(pre_point_, pose_out_, transformStamped);
+    // tf2::doTransform(pre_point_, pose_out_, transformStamped);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////一番近い距離を探索
     // for (int cluster_id = 0; cluster_id < cluster_data.cluster_points.size(); ++cluster_id) {

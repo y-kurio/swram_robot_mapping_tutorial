@@ -65,7 +65,7 @@ int main(int argc, char** argv)
         while (yaw_error < -M_PI) yaw_error += 2*M_PI;
 
         geometry_msgs::Twist cmd;
-        cmd.linear.x = std::min(0.05, kv * distance);
+        cmd.linear.x = std::min(0.08, kv * distance);
         if(yaw_error > 0)
         {
             cmd.angular.z = std::min(0.157, kw * yaw_error);

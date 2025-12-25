@@ -82,7 +82,7 @@ int main(int argc, char** argv)
             for(double y=-range; y<=range; y+=step){
                 Eigen::Vector2d d(x,y);
                 double q = d.transpose()*invSigma*d;
-                double z = exp(-std::pow(q - 2.25,2)/(2*sigma_q*sigma_q));
+                double z = exp(-std::pow(q - 9,2)/(2*sigma_q*sigma_q));
                 double z_scaled = z*5.0;
 
                 geometry_msgs::Point p;

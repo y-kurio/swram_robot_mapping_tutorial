@@ -47,6 +47,7 @@ int number, angle_degrees;
 double random_angle;
 geometry_msgs::Pose group_radius;
 geometry_msgs::PoseStamped sub_pose_out;
+    geometry_msgs::PoseStamped pose_out;
 geometry_msgs::TransformStamped sub_transformStamped;
         Eigen::Matrix2d A;
         Eigen::Vector2d pre_x;

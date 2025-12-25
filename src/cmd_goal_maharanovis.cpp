@@ -85,21 +85,21 @@ void sub_encoderCallback(const nav_msgs::Odometry::ConstPtr& msg){//フォロワ
     sub_odom_point.point = sub_odomdata_.pose.pose.position;
 
     geometry_msgs::PoseStamped sub_pre_point;
-    sub_pre_point.header = sub_odomdata_.header;
-    sub_pre_point.pose = sub_odomdata_.pose.pose;
+    sub_pose_out.header = sub_odomdata_.header;
+    sub_pose_out.pose = sub_odomdata_.pose.pose;
     
-    try
-    {
-        sub_transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, sub_pre_point.header.frame_id, sub_pre_point.header.stamp, ros::Duration(0.0));
-    }
-    catch (tf2::TransformException &ex) 
-    {
-        ROS_INFO("genninn");
-        ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
-    }
+    // try
+    // {
+    //     sub_transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, sub_pre_point.header.frame_id, sub_pre_point.header.stamp, ros::Duration(0.0));
+    // }
+    // catch (tf2::TransformException &ex) 
+    // {
+    //     ROS_INFO("genninn");
+    //     ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
+    // }
     
-    tf2::doTransform(sub_pre_point, sub_pose_out, sub_transformStamped);
-    //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // tf2::doTransform(sub_pre_point, sub_pose_out, sub_transformStamped);
+    // //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 }
 
 void goalpublisher()//目標ゴール位置を送信
@@ -109,7 +109,7 @@ void goalpublisher()//目標ゴール位置を送信
     // std::cout << "x: " << sub_goal.pose.position.x << std::endl;
     // std::cout << "y: " << sub_goal.pose.position.y << std::endl;
     // std::cout << "楕円kakudo: " << (theta / M_PI * 180) << std::endl;
-    std::cout << "robotID: " << sub_odom_point.header.frame_id << "OK!!!!!!!!!!" << std::endl;
+    // std::cout << "robotID: " << sub_odom_point.header.frame_id << "OK!!!!!!!!!!" << std::endl;
     visualization_msgs::Marker marker_sub_goal;
     marker_sub_goal.header.frame_id = "map";  // 基準座標系
     marker_sub_goal.header.stamp = ros::Time::now();
@@ -152,23 +152,22 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     odom_point.point = odomdata_.pose.pose.position;
 
     geometry_msgs::PoseStamped pre_point;
-    pre_point.header = odomdata_.header;
-    pre_point.pose = odomdata_.pose.pose;
+    pose_out.header = odomdata_.header;
+    pose_out.pose = odomdata_.pose.pose;
     
-    geometry_msgs::PoseStamped pose_out;
-    geometry_msgs::TransformStamped transformStamped;
+    // geometry_msgs::TransformStamped transformStamped;
     
-    try
-    {
-        transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, pre_point.header.frame_id, pre_point.header.stamp, ros::Duration(0.0));
-    }
-    catch (tf2::TransformException &ex) 
-    {
-        // ROS_INFO("Random value: %f", random_value);
-        ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
-    }
+    // try
+    // {
+    //     transformStamped = tf_buffer_.lookupTransform(FRAME_ROBOT_BASE, pre_point.header.frame_id, pre_point.header.stamp, ros::Duration(0.0));
+    // }
+    // catch (tf2::TransformException &ex) 
+    // {
+    //     // ROS_INFO("Random value: %f", random_value);
+    //     ROS_WARN_STREAM("get_tf TF2 exception: " << ex.what());
+    // }
     
-    tf2::doTransform(pre_point, pose_out, transformStamped);
+    // tf2::doTransform(pre_point, pose_out, transformStamped);
     //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
     // 0からRAND_MAXまでの整数を生成し、0.0〜1.0の範囲にスケール
