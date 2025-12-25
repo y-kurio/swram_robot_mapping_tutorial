@@ -39,11 +39,11 @@ int main(int argc, char** argv)
     double kv = 0.5; // 前進ゲイン
     double kw = 1.0; // 旋回ゲイン
         geometry_msgs::Point p;
-        p.x = 2.0; p.y = 0.0; p.z = 0.0; waypoints.push_back(p);
-        p.x = 6.0; p.y = -4.0; p.z = 0.0; waypoints.push_back(p);
-        p.x = 7.0; p.y = -4.0; p.z = 0.0; waypoints.push_back(p);
-        p.x = 7.0; p.y = 5.0; p.z = 0.0; waypoints.push_back(p);
-        p.x = 6.5; p.y = 10.5; p.z = 0.0; waypoints.push_back(p);
+        p.x = 0.0; p.y = 0-24; p.z= 0.0; waypoints.push_back(p);
+        // p.x = 6.0; p.y = -4.0; p.z = 0.0; waypoints.push_back(p);
+        // p.x = 7.0; p.y = -4.0; p.z = 0.0; waypoints.push_back(p);
+        // p.x = 7.0; p.y = 5.0; p.z = 0.0; waypoints.push_back(p);
+        // p.x = 6.5; p.y = 10.5; p.z = 0.0; waypoints.push_back(p);
 
     while (ros::ok())
     {
