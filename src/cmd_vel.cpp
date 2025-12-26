@@ -102,7 +102,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
     double angle_error = angle_to_goal - yaw;
     if (goal_hani_ < goal_torelanse)//閾値との相対距離比較
     {
-        if (goal_hani_ < goal_torelanse_2)//閾値との相対距離比較
+        if (goal_hani_ > goal_torelanse_2)//閾値との相対距離比較
         {
             if (fabs(angle_error) > 0.09)
             {
@@ -112,7 +112,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
                 cmd_vel.linear.z = 0.0;
                 cmd_vel.angular.x = 0.0;
                 cmd_vel.angular.y = 0.0;
-                cmd_vel.angular.z = 0.1 * angle_error;
+                cmd_vel.angular.z = 0.3;
                 cmd_vel_pub.publish(cmd_vel);
             } else
             {

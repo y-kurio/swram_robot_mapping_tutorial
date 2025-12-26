@@ -410,30 +410,39 @@ for (int i = 0; i <= resolution; ++i)
     p.z = 0.0;
 
     ellipse.points.push_back(p);
+
 }
 
 marker_pub.publish(ellipse);
 
-double x = a * std::cos(d_theta);
-double y = b * std::sin(d_theta);
+std::cout << "theta: " << d_theta * 180 /M_PI << std::endl;
 
-// 回転
-double xr =  std::cos(theta) * x - std::sin(theta) * y;
-double yr =  std::sin(theta) * x + std::cos(theta) * y;
+double vx = dx;   // robot - center
+double vy = dy;
+double xr =  cos(theta) * vx + sin(theta) * vy;
+double yr = -sin(theta) * vx + cos(theta) * vy;
+double val = (xr * xr) / (a * a)
+           + (yr * yr) / (b * b);
+//     double aa = abs(MIN_kyori_x) * std::cos(d_theta);
+//     double bb = abs(MIN_kyori_y) * std::sin(d_theta);
 
-// 距離
-d_kyori = std::sqrt(xr*xr + yr*yr);
+//     // 回転
+//     double xx =  std::cos(theta) * aa - std::sin(theta) * bb;
+//     double yy =  std::sin(theta) *aa + std::cos(theta) * bb;
+
+// // 距離
+// d_kyori = std::sqrt(xx*xx + yy*yy);
 d_robot_kyori = sqrt(pow(dx, 2) + pow(dy, 2));
 
     
-    if ( d_kyori < d_robot_kyori && goal_status.data == 1 && 5.0 > d_robot_kyori)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
+    if ( val > 1.0 && goal_status.data == 1 && d_robot_kyori < 5.0)//action_data_.status_list[0].status == 0 || //フォロワがリーダーから離れすぎた場合にリーダーの位置へ行くようにする
     {
         // ロボットの位置を更新
         ggetRandomAngle();
         sub_goal.header.frame_id = FRAME_ROBOT_BASE;
         sub_goal.header.stamp = ros::Time::now();
-        sub_goal.pose.position.x = 0.5*cos(random_angle) + pose_out.pose.position.x;
-        sub_goal.pose.position.y = 0.5*sin(random_angle) + pose_out.pose.position.y;
+        sub_goal.pose.position.x = 0.6*cos(random_angle) + pose_out.pose.position.x;
+        sub_goal.pose.position.y = 0.6*sin(random_angle) + pose_out.pose.position.y;
         sub_goal.pose.position.z = 0.0;
         sub_goal.pose.orientation.x = -0.0000365853737606;
         sub_goal.pose.orientation.y = 0.00386090210218;

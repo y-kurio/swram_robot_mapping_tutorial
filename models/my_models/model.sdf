@@ -6,14 +6,14 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://my_models/mesh/tuukatest.dae</uri>
+            <uri>model://my_models/mesh/si2025-test.dae</uri>
           </mesh>
         </geometry>
       </visual>
       <collision name="collision">
         <geometry>
           <mesh>
-            <uri>model://my_models/mesh/tuukatest.dae</uri>
+            <uri>model://my_models/mesh/si2025-test.dae</uri>
           </mesh>
         </geometry>
       </collision>
