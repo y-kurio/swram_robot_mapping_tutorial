@@ -112,7 +112,7 @@ void encoderCallback(const nav_msgs::Odometry::ConstPtr& msg)//メインロボ�
                 cmd_vel.linear.z = 0.0;
                 cmd_vel.angular.x = 0.0;
                 cmd_vel.angular.y = 0.0;
-                cmd_vel.angular.z = 0.3;
+                cmd_vel.angular.z = std::max(0.3, 0.3 * angle_error);
                 cmd_vel_pub.publish(cmd_vel);
             } else
             {

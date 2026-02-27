@@ -415,7 +415,7 @@ for (int i = 0; i <= resolution; ++i)
 
 marker_pub.publish(ellipse);
 
-std::cout << "theta: " << d_theta * 180 /M_PI << std::endl;
+// std::cout << "theta: " << d_theta * 180 /M_PI << std::endl;
 
 double vx = dx;   // robot - center
 double vy = dy;
